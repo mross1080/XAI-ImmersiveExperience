@@ -63,7 +63,14 @@ def login():
     return render_template('forms/login.html', form=form)
 
 
+last_enabled = 1
+last  = 3
 mood_lookup = {"happy":1,"default":2,"angry":3}
+
+# enabled_channel_disable_map = {1:12}
+enabled_channel_disable_map = {1:10,2:11,3:12}
+
+
 
 @app.route('/register')
 def register():
@@ -74,9 +81,18 @@ def register():
     mood = request.args.get("mood","")
     if mood:
         control_channel = mood_lookup[mood]
+        # Turn on new track
 
+        #Turn off other channels
+        for key in enabled_channel_disable_map.keys():
 
-    outport.send(mido.Message('control_change', control=control_channel, value=70, channel=2))
+            outport.send(mido.Message('control_change', control=enabled_channel_disable_map[key], value=70, channel=2))
+
+        # Trigger new scene
+        outport.send(mido.Message('control_change', control=control_channel, value=70, channel=2))
+
+        # last_enabled = control_channel
+        # last = last_enabled
     try:
         search_lights()
     except Exception as e:

@@ -18,6 +18,6 @@ function changeLights(mood) {
 
 $.get( "/register", { "mood": mood } )
   .done(function( data ) {
-    alert( "Data Loaded: " + data );
+    console.log(data)
   });
 }

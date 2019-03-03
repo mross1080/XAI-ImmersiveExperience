@@ -166,7 +166,9 @@ mood_light_config = {
 }
 
 
-def search_lights(mood):
+
+
+def setWaveformsOnGroup(bulb_group, mood):
     # Strobe
     # bulb.set_color_all_lights(WHITE)
     # bulb.set_waveform_all_lights(0, [0,0,0,0], 500, 11, 0, 4)#
@@ -177,38 +179,7 @@ def search_lights(mood):
     # bulb.set_color(BEIGE)
     # bulb.set_waveform_all_lights(1, [15500, 30000, 65535, 3500], 5000, 10, 10000, 3)
 
-    # bulb = current_bulb
-    bulb = lifx
-    a = True
-    if mood == "happy":
-        setWaveformsOnGroup(current_bulb, mood)
 
-
-    elif mood == "angry":
-        setWaveformsOnGroup(current_bulb, mood)
-    elif mood == "amazement":
-        setWaveformsOnGroup(current_bulb, mood)
-
-
-        # bulb.set_waveform_all_lights(0, PURPLE, 3500, 10, 0, 3)
-    elif mood == "fear":
-        # bulb.set_color(ORANGE)
-        print 'here'
-        setWaveformsOnGroup(current_bulb, mood)
-
-        # bulb.set_color_all_lights(ORANGE)
-        # bulb.set_waveform_all_lights(1, PURPLE, 2000, 10, 0, 3)
-        # bulb.set_color_all_lights(WHITE)
-        # bulb.set_waveform_all_lights(0, [0,0,0,0], 500, 11, 0, 4)
-    elif mood == "trust":
-        bulb.set_color_all_lights(BLUE)
-        bulb.set_waveform_all_lights(0, PURPLE, 15000, 1, 0, 2)
-    else:
-        # Sadness
-        bulb.set_color_all_lights(SADNESS_VIOLET)
-
-
-def setWaveformsOnGroup(bulb_group, mood):
     default_color = mood_light_config[mood]["default_color"]
     cycle_color = mood_light_config[mood]["cycle_color"]
     light_animation_type = mood_light_config[mood]["light_animation_type"]
@@ -321,6 +292,8 @@ import time
 
 # Default port:
 if __name__ == '__main__':
+    retry_attempts = 5
+    retry_count = 0
     print("Discovering lights...")
     lifx = LifxLAN(20)
 
@@ -335,35 +308,13 @@ if __name__ == '__main__':
         # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
         current_bulb = lifx.get_devices_by_group("Forest")
         current_group = current_bulb
-        # breathe_lights(current_bulb)
-
-        # setWaveformsOnGroup(current_bulb,"happy")
-        # b.set_waveform(1,  [65535, 65535, 65535, 2000], 5000, 50, 0, 2)
-        # b.set_waveform(1, PURPLE, 5000, 50, 0, 2)
-
-        # current_bulb.set_color_all_lights(GREEN)
-        # RED = [65535, 65535, 65535, 3500]
-        # current_bulb.set_waveform_all_lights(1, PURPLE, 2000, 10, 0, 2)
-
-
-        # current_bulb = lifx.get_devices_by_group("Forest")
-        # current_group = current_bulb
-        # current_bulb.set_power(0)
-        # lifx.set_power_all_lights(0)
-        #
-        # if hasattr(current_bulb, 'set_waveform_all_lights'):
-        #
-        #     current_bulb.set_waveform_all_lights(1, GREEN, 10000, 10, 0, 1)
-        # else:
-        #     current_bulb.set_waveform(1, GREEN, 2000, 10, 0, 2)
-
-        # current_bulb.set_waveform(0, CYAN, 1500, 50, 0, 0)
-
-
-        # current_bulb.set_color([5275, 033, 65535, 2500])
     else:
-        print "PROBLEM FINDING LIGHTS PLEASE CHECK YOUR NETWORK"
-        exit()
+        if retry_count > retry_attempts:
+            print "PROBLEM FINDING LIGHTS PLEASE CHECK YOUR NETWORK"
+            exit()
+        else:
+            print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
+            time.sleep(5)
 
     app.run()
 

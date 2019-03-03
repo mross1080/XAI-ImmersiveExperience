@@ -158,7 +158,7 @@ mood_light_config = {
         "cycle_color": PURPLE
     },
     "sadness": {
-        "light_animation_type": "smooth",
+        "light_animation_type": "single",
         "default_color": SADNESS_VIOLET,
         "cycle_color": BLUE
     }
@@ -185,16 +185,34 @@ def setWaveformsOnGroup(bulb_group, mood):
     light_animation_type = mood_light_config[mood]["light_animation_type"]
 
     for device in bulb_group.devices:
+        device.set_power(65535)
         if light_animation_type == "smooth":
             device.set_color(default_color)
             device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
         elif light_animation_type == "urgency":
             device.set_color(default_color)
-            device.set_waveform(1, cycle_color, 2000, 20, 10000, 3)
+            device.set_waveform(1, cycle_color, 1000, 30, 0, 3)
         elif light_animation_type == "strobe":
             device.set_color(default_color)
-            device.set_waveform(0, [0, 0, 0, 0], 300, 20, 0, 4)
+            device.set_waveform(1, [0, 0, 0, 0], 300, 20, 0, 4)
+        elif light_animation_type == "single":
+            turn_of_all_lights()
 
+            random_light_index = 0
+            if len(bulb_group.devices) > 1:
+                random_light_index = random.randint(0, len(bulb_group.devices))
+
+            single_device = bulb_group.devices[random_light_index]
+            single_device.set_power(65535)
+            single_device.set_color(default_color)
+            single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
+            break
+
+
+
+def turn_of_all_lights():
+    for device in current_bulb.devices:
+        device.set_power(0)
 
 def rainbow(bulb, duration_secs=0.5, smooth=False):
     colors = [RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, PURPLE, PINK]

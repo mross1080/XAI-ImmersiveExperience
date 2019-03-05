@@ -9,9 +9,9 @@ import random
 from flask import Flask, render_template, request, jsonify
 from lifxlan import BLUE, GREEN, LifxLAN, sleep, RED, ORANGE, YELLOW, CYAN, PURPLE, PINK, time, Group, WHITE
 
-BEIGE = [10500, 30000, 65535, 3500]
+BEIGE = [10500, 20000, 65535, 3500]
 SADNESS_VIOLET = [46634, 65535, 65535, 3500]
-DARK_GREEN = [16173, 65535, 30000, 3500]
+DARK_GREEN = [16173, 65535, 20000, 1500]
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
@@ -51,7 +51,7 @@ def login():
 
 last_enabled = 1
 last = 3
-mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6}
+mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7}
 
 # enabled_channel_disable_map = {1:12}
 enabled_channel_disable_map = {1: 10, 2: 12, 3: 11}
@@ -137,14 +137,19 @@ mood_light_config = {
         "default_color": YELLOW,
         "cycle_color": [15500, 30000, 65535, 3500]
     },
-    "angry": {
+    "angry2": {
         "light_animation_type": "smooth",
         "default_color": ORANGE,
         "cycle_color": [65535, 65535, 65535, 2000]
     },
+    "angry": {
+        "light_animation_type": "strobe",
+        "default_color": RED,
+        "cycle_color": [0,0,0,0]
+    },
     "amazement": {
         "light_animation_type": "urgency",
-        "default_color": GREEN,
+        "default_color": ORANGE,
         "cycle_color": CYAN
     },
     "fear": {
@@ -156,6 +161,11 @@ mood_light_config = {
         "light_animation_type": "smooth",
         "default_color": BLUE,
         "cycle_color": PURPLE
+    },
+    "neutral": {
+        "light_animation_type": "smooth",
+        "default_color": WHITE,
+        "cycle_color": BEIGE
     },
     "sadness": {
         "light_animation_type": "single",
@@ -184,29 +194,35 @@ def setWaveformsOnGroup(bulb_group, mood):
     cycle_color = mood_light_config[mood]["cycle_color"]
     light_animation_type = mood_light_config[mood]["light_animation_type"]
 
-    for device in bulb_group.devices:
-        device.set_power(65535)
-        if light_animation_type == "smooth":
-            device.set_color(default_color)
-            device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
-        elif light_animation_type == "urgency":
-            device.set_color(default_color)
-            device.set_waveform(1, cycle_color, 1000, 30, 0, 3)
-        elif light_animation_type == "strobe":
-            device.set_color(default_color)
-            device.set_waveform(1, [0, 0, 0, 0], 300, 20, 0, 4)
-        elif light_animation_type == "single":
-            turn_of_all_lights()
+    count = 0;
+    if (count <= 2):
+        for device in bulb_group.devices:
+            device.set_power(65535)
 
-            random_light_index = 0
-            if len(bulb_group.devices) > 1:
-                random_light_index = random.randint(0, len(bulb_group.devices))
+            if light_animation_type == "smooth":
+                device.set_color(default_color)
+                device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
+            elif light_animation_type == "urgency":
+                device.set_color(default_color)
+                device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
+            elif light_animation_type == "strobe":
+                device.set_color(default_color)
+                device.set_waveform(0, [0, 0, 0, 0], 300, 40, 0, 4)
+            elif light_animation_type == "single":
+                turn_of_all_lights()
 
-            single_device = bulb_group.devices[random_light_index]
-            single_device.set_power(65535)
-            single_device.set_color(default_color)
-            single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
-            break
+                random_light_index = 0
+                if len(bulb_group.devices) > 1:
+                    random_light_index = random.randint(0, len(bulb_group.devices))
+
+                single_device = bulb_group.devices[random_light_index]
+                single_device.set_power(65535)
+                single_device.set_color(default_color)
+                single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
+                break
+
+        count+=1
+        time.sleep(1)
 
 
 
@@ -316,25 +332,50 @@ if __name__ == '__main__':
     lifx = LifxLAN(20)
 
     # get devices
-    devices = lifx.get_lights()
-    if devices:
-        # Setup flag for at home or at wildrence
+    try:
+        devices = lifx.get_devices_by_group("Forest")
+        if devices:
+            # Setup flag for at home or at wildrence
 
-        b = devices[0]
+            for device in devices.devices:
+                try:
 
-        b.set_color([16173, 65535, 30000, 3500])
-        # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
-        current_bulb = lifx.get_devices_by_group("Forest")
-        current_group = current_bulb
-    else:
-        if retry_count > retry_attempts:
-            print "PROBLEM FINDING LIGHTS PLEASE CHECK YOUR NETWORK"
-            exit()
+                    device.set_power(65535)
+                    device.set_color(BLUE)
+                except Exception as e:
+                    print "hi"
+                    print e
+            #
+            # b = devices[0]
+            #
+            # b.set_color([16173, 65535, 30000, 3500])
+            # # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
+            current_bulb = lifx.get_devices_by_group("Forest")
+            current_group = current_bulb
+            #
+            # while True:
+            #     try:
+            #         outport.send(mido.Message('note_on', note=random.randint(50,70), channel=2))
+            #         b.set_color([random.randint(10000,50000), 65535, 65535, 3500])
+            #         time.sleep(.5)
+            #     except Exception as e:
+            #         print e
+
         else:
-            print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
-            time.sleep(5)
+            if retry_count > retry_attempts:
+                print "PROBLEM FINDING LIGHTS PLEASE CHECK YOUR NETWORK, YOU MAY BE USING 5G OR GUEST NETWORK WHICH CAUSES PROBLEMS"
+                exit()
+            else:
+                print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
+                time.sleep(5)
+        app.run()
+    except Exception as e:
+        print "hiii"
+        print e
 
-    app.run()
+
+
+
 
 # Or specify port manually:
 '''

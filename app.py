@@ -198,15 +198,13 @@ def setWaveformsOnGroup(bulb_group, mood):
     if (count <= 2):
         for device in bulb_group.devices:
             device.set_power(65535)
+            device.set_color(default_color)
 
             if light_animation_type == "smooth":
-                device.set_color(default_color)
                 device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
             elif light_animation_type == "urgency":
-                device.set_color(default_color)
                 device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
             elif light_animation_type == "strobe":
-                device.set_color(default_color)
                 device.set_waveform(0, [0, 0, 0, 0], 300, 40, 0, 4)
             elif light_animation_type == "single":
                 turn_of_all_lights()

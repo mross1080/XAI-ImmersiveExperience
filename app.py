@@ -51,7 +51,7 @@ def login():
 
 last_enabled = 1
 last = 3
-mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7}
+mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7,"rage":3,"ecstasy":10}
 
 # enabled_channel_disable_map = {1:12}
 enabled_channel_disable_map = {1: 10, 2: 12, 3: 11}
@@ -137,7 +137,7 @@ mood_light_config = {
         "default_color": YELLOW,
         "cycle_color": [15500, 30000, 65535, 3500]
     },
-    "angry2": {
+    "rage": {
         "light_animation_type": "smooth",
         "default_color": ORANGE,
         "cycle_color": [65535, 65535, 65535, 2000]
@@ -159,17 +159,22 @@ mood_light_config = {
     },
     "trust": {
         "light_animation_type": "smooth",
-        "default_color": BLUE,
-        "cycle_color": PURPLE
+        "default_color": SADNESS_VIOLET,
+        "cycle_color": WHITE
     },
     "neutral": {
         "light_animation_type": "smooth",
         "default_color": WHITE,
         "cycle_color": BEIGE
     },
+    "ecstasy": {
+        "light_animation_type": "dance_party",
+        "default_color": WHITE,
+        "cycle_color": BEIGE
+    },
     "sadness": {
-        "light_animation_type": "single",
-        "default_color": SADNESS_VIOLET,
+        "light_animation_type": "smooth",
+        "default_color": PURPLE,
         "cycle_color": BLUE
     }
 
@@ -198,6 +203,7 @@ def setWaveformsOnGroup(bulb_group, mood):
     if (count <= 2):
         for device in bulb_group.devices:
             device.set_power(65535)
+
             device.set_color(default_color)
 
             if light_animation_type == "smooth":
@@ -205,7 +211,7 @@ def setWaveformsOnGroup(bulb_group, mood):
             elif light_animation_type == "urgency":
                 device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
             elif light_animation_type == "strobe":
-                device.set_waveform(0, [0, 0, 0, 0], 300, 40, 0, 4)
+                 device.set_waveform(1, [0, 0, 0, 0], 300, 40, 0, 4)
             elif light_animation_type == "single":
                 turn_of_all_lights()
 
@@ -218,10 +224,26 @@ def setWaveformsOnGroup(bulb_group, mood):
                 single_device.set_color(default_color)
                 single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
                 break
+            elif light_animation_type == "dance_party":
+                trigger_dance_party(bulb_group)
+                break
+
 
         count+=1
         time.sleep(1)
 
+def trigger_dance_party(bulb_group):
+    for i in range(60):
+        try:
+            print("Here")
+            note = random.randint(50, 70)
+            bulb_group.set_color([random.randint(10000, 50000), 65535, 65535, 3500])
+            outport.send(mido.Message('note_on', note=note, channel=2))
+            time.sleep(.3)
+            outport.send(mido.Message('note_off', note=note, channel=2))
+
+        except Exception as e:
+            print e
 
 
 def turn_of_all_lights():
@@ -340,24 +362,19 @@ if __name__ == '__main__':
 
                     device.set_power(65535)
                     device.set_color(BLUE)
+
+                    #trigger_dance_party(devices)
                 except Exception as e:
                     print "hi"
                     print e
             #
-            # b = devices[0]
+            setWaveformsOnGroup(devices, "neutral")
+            b = devices.devices[0]
             #
             # b.set_color([16173, 65535, 30000, 3500])
             # # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
-            current_bulb = lifx.get_devices_by_group("Forest")
-            current_group = current_bulb
-            #
-            # while True:
-            #     try:
-            #         outport.send(mido.Message('note_on', note=random.randint(50,70), channel=2))
-            #         b.set_color([random.randint(10000,50000), 65535, 65535, 3500])
-            #         time.sleep(.5)
-            #     except Exception as e:
-            #         print e
+            current_bulb = devices
+            #current_group = current_bulb
 
         else:
             if retry_count > retry_attempts:

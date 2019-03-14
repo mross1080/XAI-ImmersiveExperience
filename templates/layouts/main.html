@@ -84,7 +84,7 @@ $( "#target" ).click(function() {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">XAI Operator Dashboard</a>
+          <a class="navbar-brand" href="/">Impression Experince Operator Dashboard</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -112,38 +112,93 @@ $( "#target" ).click(function() {
       {% endwith %}
 
       {% block content %}{% endblock %}
+
       <div id="tardget">
 
+        <table class ="table table-bordered">
+          <tbody>
+        <tr>
+          <td>
+
         <button type="button"  onclick="changeLights('happy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-  Trigger Joy Sequence
+  Trigger Happy Sequence
 </button>
-
-
+            <p>This induces a calming sway between orange and yellow</p>
+</td>
+<td>
         <button type="button"  onclick="changeLights('sadness')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Trigger Sadness Sequence
 </button>
-
+  <p>Smooth between purple and blue</p>
+</td>
+          <td>
         <button type="button"  onclick="changeLights('angry')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
   Trigger Anger Sequence
 </button>
-        <br><br><br><br>
-      <button type="button"  onclick="changeLights('amazement')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+             <p>This induces a scary strobe light effect in red </p>
+          </td>
+          </tr>
+        <!--<br><br><br><br>-->
+       <tr>
+         <td>
+          <button type="button"  onclick="changeLights('amazement')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
   Trigger Amazement Sequence
 </button>
+           </td>
+         <td>
               <button type="button"  onclick="changeLights('trust')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Trigger Trust Sequence
 </button>
+           <p>Lights move from White to Violet</p>
+         </td>
+
+         <td>
 
               <button type="button"  onclick="changeLights('fear')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
   Trigger Fear Sequence
 </button>
+           <p>This induced a strobe light effect in dark green</p>
+         </td>
+          </tr>
+          <tr>
+            <td>
+
+
+        <button type="button"  onclick="changeLights('ecstasy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+  Trigger Joy Sequence
+</button>
+            <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds</p>
+</td>
+
+
+
+            </td>
+            <td>
+
+                            <button type="button"  onclick="changeLights('neutral')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
+  Trigger Neutral Sequence
+</button>
+              <p>This is a neutral State, lights move from white to beige</p>
+
+            </td>
+            <td>
+                      <button type="button"  onclick="changeLights('rage')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+  Trigger Rage Sequence
+</button>
+              <p>This is a seething rage, lights are gradually changing from red to orange</p>
+
+
+            </td>
+
+
+          </tr>
+          </tbody>
+          </table>
 
                 <br><br><br><br>
 
-              <button type="button"  onclick="changeLights('neutral')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
-  Trigger Neutral Sequence
-</button>
 
+</div>
     </main>
 <!-- Button trigger modal -->
 
@@ -173,10 +228,7 @@ $( "#target" ).click(function() {
   </div>
 
   <div id="footer">
-    <div class="container">
-      <p>Your Company &copy; All Rights Reserved.</p>
-      {% block footer %}{% endblock %}
-    </div>
+
   </div>
   <script type="text/javascript" src="/static/js/script.js" ></script>
 

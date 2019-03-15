@@ -144,6 +144,7 @@ $( "#target" ).click(function() {
           <button type="button"  onclick="changeLights('amazement')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
   Trigger Amazement Sequence
 </button>
+           <p>Cycle Quickly between a spectrum of warm colors</p>
            </td>
          <td>
               <button type="button"  onclick="changeLights('trust')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -167,7 +168,10 @@ $( "#target" ).click(function() {
         <button type="button"  onclick="changeLights('ecstasy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
   Trigger Joy Sequence
 </button>
-            <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds</p>
+            <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds<br>
+            <strong>Warning<strong></strong> can not interrupt until sequence is over
+
+            </p>
 </td>
 
 
@@ -196,6 +200,15 @@ $( "#target" ).click(function() {
           </table>
 
                 <br><br><br><br>
+                            <button type="button"  onclick="changeLights('musicoff')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
+  Trigger Neutral Sequence
+</button>
+              <p>This turns off all music if there are problems</p>
+          <br>
+                                      <button type="button"  onclick="changeLights('start')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+  Trigger Starting Sequence
+</button>
+              <p>Starting Sequence, flash green</p>
 
 
 </div>

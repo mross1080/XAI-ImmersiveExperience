@@ -51,7 +51,7 @@ def login():
 
 last_enabled = 1
 last = 3
-mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7,"rage":3,"ecstasy":10}
+mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7,"rage":3,"ecstasy":10,"musicoff":11,"start":12}
 
 # enabled_channel_disable_map = {1:12}
 enabled_channel_disable_map = {1: 10, 2: 12, 3: 11}
@@ -71,21 +71,16 @@ def register():
     mood = request.args.get("mood", "")
     if mood:
         control_channel = mood_lookup[mood]
-        # Turn on new track
-
-        # #Turn off other channels
-        # for key in enabled_channel_disable_map.keys():
-        #
-        #     outport.send(mido.Message('control_change', control=enabled_channel_disable_map[key], value=70, channel=2))
-
-        # Trigger new scene
+        # Turn off old audio
+        outport.send(mido.Message('control_change', control=11, value=70, channel=2))
+        # Trigger new scene audio in ableton
         outport.send(mido.Message('control_change', control=control_channel, value=70, channel=2))
 
         # last_enabled = control_channel
         # last = last_enabled
     try:
-
-        setWaveformsOnGroup(current_bulb, mood)
+        if mood is not "musicoff":
+            setWaveformsOnGroup(current_bulb, mood)
         # search_lights(mood)
     except Exception as e:
         print "problms "
@@ -157,6 +152,11 @@ mood_light_config = {
         "default_color": DARK_GREEN,
         "cycle_color": [0, 0, 0, 0]
     },
+    "start": {
+        "light_animation_type": "start",
+        "default_color": GREEN,
+        "cycle_color": [0, 0, 0, 0]
+    },
     "trust": {
         "light_animation_type": "smooth",
         "default_color": SADNESS_VIOLET,
@@ -223,6 +223,18 @@ def setWaveformsOnGroup(bulb_group, mood):
                 single_device.set_power(65535)
                 single_device.set_color(default_color)
                 single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
+                break
+            elif light_animation_type == "start":
+                turn_of_all_lights()
+
+                random_light_index = 0
+                if len(bulb_group.devices) > 1:
+                    random_light_index = random.randint(0, len(bulb_group.devices))
+
+                single_device = bulb_group.devices[random_light_index]
+                single_device.set_power(65535)
+                single_device.set_color(default_color)
+                device.set_waveform(1, [0, 0, 0, 0], 1000, 10, 0, 4)
                 break
             elif light_animation_type == "dance_party":
                 trigger_dance_party(bulb_group)
@@ -348,45 +360,47 @@ import time
 if __name__ == '__main__':
     retry_attempts = 5
     retry_count = 0
+
     print("Discovering lights...")
     lifx = LifxLAN(20)
+    while True:
 
-    # get devices
-    try:
-        devices = lifx.get_devices_by_group("Forest")
-        if devices:
-            # Setup flag for at home or at wildrence
+        # get devices
+        try:
+            devices = lifx.get_devices_by_group("Forest")
+            if devices:
+                # Setup flag for at home or at wildrence
 
-            for device in devices.devices:
-                try:
+                for device in devices.devices:
+                    try:
 
-                    device.set_power(65535)
-                    device.set_color(BLUE)
+                        device.set_power(65535)
+                        device.set_color(BLUE)
 
-                    #trigger_dance_party(devices)
-                except Exception as e:
-                    print "hi"
-                    print e
-            #
-            setWaveformsOnGroup(devices, "neutral")
-            b = devices.devices[0]
-            #
-            # b.set_color([16173, 65535, 30000, 3500])
-            # # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
-            current_bulb = devices
-            #current_group = current_bulb
+                        #trigger_dance_party(devices)
+                    except Exception as e:
+                        print "hi"
+                        print e
+                #
+                setWaveformsOnGroup(devices, "neutral")
+                b = devices.devices[0]
+                #
+                # b.set_color([16173, 65535, 30000, 3500])
+                # # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
+                current_bulb = devices
+                #current_group = current_bulb
 
-        else:
-            if retry_count > retry_attempts:
-                print "PROBLEM FINDING LIGHTS PLEASE CHECK YOUR NETWORK, YOU MAY BE USING 5G OR GUEST NETWORK WHICH CAUSES PROBLEMS"
-                exit()
             else:
-                print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
-                time.sleep(5)
-        app.run()
-    except Exception as e:
-        print "hiii"
-        print e
+                if retry_count > retry_attempts:
+                    print "PROBLEM FINDING LIGHTS PLEASE CHECK YOUR NETWORK, YOU MAY BE USING 5G OR GUEST NETWORK WHICH CAUSES PROBLEMS"
+                    exit()
+                else:
+                    print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
+                    time.sleep(5)
+            app.run()
+        except Exception as e:
+            print "hiii"
+            print e
 
 
 

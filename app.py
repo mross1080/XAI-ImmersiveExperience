@@ -234,7 +234,7 @@ def setWaveformsOnGroup(bulb_group, mood):
                 single_device = bulb_group.devices[random_light_index]
                 single_device.set_power(65535)
                 single_device.set_color(default_color)
-                device.set_waveform(1, [0, 0, 0, 0], 1000, 10, 0, 4)
+                device.set_waveform(0, [0, 0, 0, 0], 1000, 10, 0, 4)
                 break
             elif light_animation_type == "dance_party":
                 trigger_dance_party(bulb_group)
@@ -389,6 +389,7 @@ if __name__ == '__main__':
                 # # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
                 current_bulb = devices
                 #current_group = current_bulb
+                turn_of_all_lights()
 
             else:
                 if retry_count > retry_attempts:

@@ -360,6 +360,7 @@ import time
 if __name__ == '__main__':
     retry_attempts = 5
     retry_count = 0
+    NOT_NEAR_BULBS = True
 
     print("Discovering lights...")
     lifx = LifxLAN(20)
@@ -397,9 +398,13 @@ if __name__ == '__main__':
                     exit()
                 else:
                     print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
+
                     time.sleep(5)
             app.run()
         except Exception as e:
+            if NOT_NEAR_BULBS:
+                app.run()
+                break
             print "hiii"
             print e
 

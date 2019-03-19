@@ -26,6 +26,9 @@
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
 <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
 <link rel="shortcut icon" href="/static/ico/favicon.png">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.1/Tone.js"></script>
 <!-- /favicons -->
   <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -34,7 +37,32 @@
 <script type="text/javascript" src="/static/js/script.js" ></script>
   <script>
 
+var meter = new Tone.Meter();
+Tone.Master.chain(meter);
 
+var grainplayer;
+function preload() {
+
+    console.log("loading");
+
+    var localURL = "./joy.wav"
+    var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
+grainplayer = new Tone.GrainPlayer({
+    "url": localURL,
+    "loop": true,
+    "grainSize": 1,
+    "overlap": 1,
+    "reverse": true,
+    "playbackRate": 1
+}).toMaster();
+console.log("done")
+grainplayer.start();
+}
+
+function setup() {
+console.log("Starting")
+grainplayer.start();
+}
 
 
 

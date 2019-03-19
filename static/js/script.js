@@ -3,7 +3,8 @@ Tone.Master.chain(meter);
 
 currentState = true
 var players;
- var localURL = "./joy.wav"
+ var localURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/vocals.wav"
+
     var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
 
 
@@ -18,10 +19,6 @@ var micInput = new Tone.UserMedia();
 function preload() {
 
     console.log("loading");
-
-    var localURL = "./joy.wav"
-
-    var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
 
     try {
 

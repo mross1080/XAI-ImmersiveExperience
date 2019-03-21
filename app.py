@@ -5,10 +5,10 @@ import sys
 
 from copy import copy
 import random
-
+print("on")
 from flask import Flask, render_template, request, jsonify
 from lifxlan import BLUE, GREEN, LifxLAN, sleep, RED, ORANGE, YELLOW, CYAN, PURPLE, PINK, time, Group, WHITE
-
+print("on22")
 BEIGE = [10500, 20000, 65535, 3500]
 SADNESS_VIOLET = [46634, 65535, 65535, 3500]
 DARK_GREEN = [16173, 65535, 20000, 1500]
@@ -19,8 +19,9 @@ from forms import *
 import os
 import mido
 
-outport = mido.open_output('To Live Live')
-
+# outport = mido.open_output('To Live Live')
+outport = {}
+print("on2")
 # ----------------------------------------------------------------------------#
 # App Config.
 # ----------------------------------------------------------------------------#
@@ -69,12 +70,12 @@ def register():
     print request.data
     print request.values
     mood = request.args.get("mood", "")
-    if mood:
-        control_channel = mood_lookup[mood]
+    #if mood:
+        #control_channel = mood_lookup[mood]
         # Turn off old audio
-        outport.send(mido.Message('control_change', control=11, value=70, channel=2))
-        # Trigger new scene audio in ableton
-        outport.send(mido.Message('control_change', control=control_channel, value=70, channel=2))
+        # outport.send(mido.Message('control_change', control=11, value=70, channel=2))
+        # # Trigger new scene audio in ableton
+        # outport.send(mido.Message('control_change', control=control_channel, value=70, channel=2))
 
         # last_enabled = control_channel
         # last = last_enabled
@@ -179,7 +180,7 @@ mood_light_config = {
     }
 
 }
-
+print("on333")
 
 
 
@@ -469,3 +470,6 @@ def messWithSettings():
     #
     #         # bulb = devices[2]
     #         print("Selected {}".format(current_bulb.get_label()))
+
+
+print("done")

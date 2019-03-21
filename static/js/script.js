@@ -3,9 +3,10 @@ Tone.Master.chain(meter);
 
 currentState = true
 var players;
- var localURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/vocals.wav"
-
-    var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
+// var localURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/vocals.wav"
+var localURL = "joy.wav"
+    //var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
+    var remoteURL = "https://s3.amazonaws.com/impressionexperience/"
 
 
 
@@ -13,13 +14,14 @@ var meter = new Tone.Meter();
 Tone.Master.chain(meter);
 var players;
 var grainplayer;
-var sampleUrls = {"joy":localURL,"anger":remoteURL}
+
+var sampleUrls = {"joy":remoteURL+"joy.wav","anger": remoteURL+ "anger.wav","rage": remoteURL+ "anger.wav","amazement": remoteURL+ "anticipation.wav","fear": remoteURL+ "fear.wav","sad": remoteURL+ "sad.mp3","trust": remoteURL+"trust.wav"}
 
 var micInput = new Tone.UserMedia();
 function preload() {
 
     console.log("loading");
-
+    console.log(sampleUrls)
     try {
 
 
@@ -47,15 +49,31 @@ var autoWah = new Tone.AutoWah(50, 6, -30).toMaster();
 }
 
 function setup() {
-
+document.getElementById("micControl").checked = false
 }
 
 
+
+
+
 function controlMic() {
+console.log("changing mic")
+if (!document.getElementById("micControl").checked) {
+
+
+console.log("Turning mic on")
 var autoWah = new Tone.AutoWah(50, 6, -30).toMaster();
 //opening the input asks the user to activate their mic
 micInput.open();
 micInput.connect(autoWah).toMaster();
+
+
+
+} else {
+console.log("closing mic")
+micInput.close();
+
+}
 
 }
 
@@ -65,24 +83,26 @@ var player2 = new Tone.Player(remoteURL).toMaster();
 var currentState = true
 function changeLights(mood) {
 
-
+console.log("changing lights to : " + mood)
 //play as soon as the buffer is loaded
 
+players.stopAll();
+players.get(mood).start();
 
-
-   console.log("Changing url")
-   if (currentState) {
-   console.log("joy")
-   players.get("joy").start()
-   currentState = false;
-players.get("anger").stop()
-   } else {
-   players.get("joy").stop()
-   players.get("anger").start()
-    currentState = true;
-    console.log("anger")
-
-   }
+//
+//   console.log("Changing url")
+//   if (currentState) {
+//   console.log("joy")
+//   players.get("joy").start()
+//   currentState = false;
+//players.get("anger").stop()
+//   } else {
+//   players.get("joy").stop()
+//   players.get("anger").start()
+//    currentState = true;
+//    console.log("anger")
+//
+//   }
 
 $.get( "/register", { "mood": mood } )
   .done(function( data ) {

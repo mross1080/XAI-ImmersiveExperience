@@ -40,7 +40,6 @@ function preload() {
     }
 
 
-    var autoWah = new Tone.AutoWah(40, 8, -30).toMaster();
     //opening the input asks the user to activate their mic
 
     //motu.open().then(function(){
@@ -64,9 +63,17 @@ function controlMic() {
 
         console.log("Turning mic on")
         var autoWah = new Tone.AutoWah(50, 6, -30).toMaster();
+        var reverb =new Tone.JCReverb(0.8).toMaster();
+var pitch = new Tone.PitchShift({"pitch":-36}).toMaster();
+
+var phaser = new Tone.Phaser({
+	"frequency" : 15,
+	"octaves" : 5,
+	"baseFrequency" : 1000
+}).toMaster();
         //opening the input asks the user to activate their mic
         micInput.open();
-        micInput.connect(autoWah).toMaster();
+        micInput.connect(autoWah).connect(reverb).connect(phaser).connect(pitch).toMaster();
 
 
 

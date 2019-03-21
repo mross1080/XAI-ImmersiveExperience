@@ -1,226 +1,185 @@
 <!doctype html>
+
 <head>
-<meta charset="utf-8">
-<title>{% block title %}{% endblock %}</title>
-
-<!-- meta -->
-<meta name="description" content="">
-<meta name="author" content="">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- /meta -->
-
-<!-- styles -->
-<link type="text/css" rel="stylesheet" href="/static/css/font-awesome-4.1.0.min.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-3.1.1.min.css">
-<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme-3.1.1.min.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/layout.main.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.responsive.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.quickfix.css" />
-<!-- /styles -->
-
-<!-- favicons -->
-<link rel="shortcut icon" href="/static/ico/favicon.png">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="/static/ico/favicon.png">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.1/Tone.js"></script>
-
-<!-- /favicons -->
-  <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-<script type="text/javascript" src="/static/js/script.js" ></script>
-        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-  <script>
-
-
-  </script>
-<!-- scripts -->
-<script src="/static/js/libs/modernizr-2.8.2.min.js"></script>
-<!--[if lt IE 9]><script src="/static/js/libs/respond-1.4.2.min.js"></script><![endif]-->
-<!-- /scripts -->
-
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- meta -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- /meta -->
+    <!-- styles -->
+    <link type="text/css" rel="stylesheet" href="/static/css/font-awesome-4.1.0.min.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap-3.1.1.min.css">
+    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme-3.1.1.min.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/layout.main.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/main.responsive.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/main.quickfix.css" />
+    <!-- /styles -->
+    <!-- favicons -->
+    <link rel="shortcut icon" href="/static/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/static/ico/favicon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.1/Tone.js"></script>
+    <!-- /favicons -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script>
+    </script>
+    <!-- scripts -->
+    <script src="/static/js/libs/modernizr-2.8.2.min.js"></script>
+    <!--[if lt IE 9]><script src="/static/js/libs/respond-1.4.2.min.js"></script><![endif]-->
+    <!-- /scripts -->
 </head>
+
 <body>
-
-  <!-- Wrap all page content here -->
-  <div id="wrap">
-
-    <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Impression Experince Operator Dashboard</a>
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Impression Experince Operator Dashboard</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-          
-
-          </ul>
-
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
-
-    <!-- Begin page content -->
-    <main id="content" role="main" class="container">
-
-
-        <div  class="checkbox">
-  <label onclick="controlMic()">
-    <input  id="micControl" type="checkbox" data-toggle="toggle">
-    Microphone State
-  </label>
-</div>
-      <div id="tardget">
-
-        <table class ="table table-bordered">
-          <tbody>
-        <tr>
-          <td>
-
-        <button type="button"  onclick="changeLights('happy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-  Trigger Happy Sequence
-</button>
-            <p>This induces a calming sway between orange and yellow</p>
-</td>
-<td>
-        <button type="button"  onclick="changeLights('sadness')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Trigger Sadness Sequence
-</button>
-  <p>Smooth between purple and blue</p>
-</td>
-          <td>
-        <button type="button"  onclick="changeLights('angry')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-  Trigger Anger Sequence
-</button>
-             <p>This induces a scary strobe light effect in red </p>
-          </td>
-          </tr>
-        <!--<br><br><br><br>-->
-       <tr>
-         <td>
-          <button type="button"  onclick="changeLights('amazement')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-  Trigger Amazement Sequence
-</button>
-           <p>Cycle Quickly between a spectrum of warm colors</p>
-           </td>
-         <td>
-              <button type="button"  onclick="changeLights('trust')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Trigger Trust Sequence
-</button>
-           <p>Lights move from White to Violet</p>
-         </td>
-
-         <td>
-
-              <button type="button"  onclick="changeLights('fear')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-  Trigger Fear Sequence
-</button>
-           <p>This induced a strobe light effect in dark green</p>
-         </td>
-          </tr>
-          <tr>
-            <td>
-
-
-        <button type="button"  onclick="changeLights('ecstasy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-  Trigger Joy Sequence
-</button>
-            <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds<br>
-            <strong>Warning<strong></strong> can not interrupt until sequence is over
-
-            </p>
-</td>
-
-
-
-            </td>
-            <td>
-
-                            <button type="button"  onclick="changeLights('neutral')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
-  Trigger Neutral Sequence
-</button>
-              <p>This is a neutral State, lights move from white to beige</p>
-
-            </td>
-            <td>
-                      <button type="button"  onclick="changeLights('rage')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-  Trigger Rage Sequence
-</button>
-              <p>This is a seething rage, lights are gradually changing from red to orange</p>
-
-
-            </td>
-
-
-          </tr>
-          </tbody>
-          </table>
-
+        <!-- Begin page content -->
+        <main id="content" role="main" class="container">
+            <div class="checkbox">
+                <label onclick="controlMic()">
+                    <input id="micControl" type="checkbox" data-toggle="toggle">
+                    Microphone State
+                </label>
+            </div>
+            <div id="tardget">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <button type="button" onclick="changeLights('happy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Happy Sequence
+                                </button>
+                                <p>This induces a calming sway between orange and yellow</p>
+                            </td>
+                            <td>
+                                <button type="button" onclick="changeLights('sadness')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Sadness Sequence
+                                </button>
+                                <p>Smooth between purple and blue</p>
+                            </td>
+                            <td>
+                                <button type="button" onclick="changeLights('angry')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Anger Sequence
+                                </button>
+                                <p>This induces a scary strobe light effect in red </p>
+                            </td>
+                        </tr>
+                        <!--<br><br><br><br>-->
+                        <tr>
+                            <td>
+                                <button type="button" onclick="changeLights('amazement')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Amazement Sequence
+                                </button>
+                                <p>Cycle Quickly between a spectrum of warm colors</p>
+                            </td>
+                            <td>
+                                <button type="button" onclick="changeLights('trust')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Trust Sequence
+                                </button>
+                                <p>Lights move from White to Violet</p>
+                            </td>
+                            <td>
+                                <button type="button" onclick="changeLights('fear')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Fear Sequence
+                                </button>
+                                <p>This induced a strobe light effect in dark green</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" onclick="changeLights('ecstasy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Joy Sequence
+                                </button>
+                                <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds<br>
+                                    <strong>Warning<strong></strong> can not interrupt until sequence is over
+                                </p>
+                            </td>
+                            </td>
+                            <td>
+                                <button type="button" onclick="changeLights('neutral')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Neutral Sequence
+                                </button>
+                                <p>This is a neutral State, lights move from white to beige</p>
+                            </td>
+                            <td>
+                                <button type="button" onclick="changeLights('rage')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Rage Sequence
+                                </button>
+                                <p>This is a seething rage, lights are gradually changing from red to orange</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <br><br><br><br>
-                            <button type="button"  onclick="changeLights('musicoff')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
-  Trigger Neutral Sequence
-</button>
-              <p>This turns off all music if there are problems</p>
-          <br>
-                                      <button type="button"  onclick="changeLights('start')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-  Trigger Starting Sequence
-</button>
-              <p>Starting Sequence, flash green</p>
-
-
-</div>
-    </main>
-<!-- Button trigger modal -->
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Scene Change Info</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id = "scenestatusresponse"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+                <button type="button" onclick="changeLights('musicoff')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
+                    Trigger Neutral Sequence
+                </button>
+                <p>This turns off all music if there are problems</p>
+                <br>
+                <button type="button" onclick="changeLights('start')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                    Trigger Starting Sequence
+                </button>
+                <p>Starting Sequence, flash green</p>
+            </div>
+        </main>
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Scene Change Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="scenestatusresponse"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
-
-
-  </div>
-
-  <div id="footer">
-
-  </div>
-  <script type="text/javascript" src="/static/js/script.js" ></script>
-
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')</script>
-  <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
-  <script type="text/javascript" src="/static/js/plugins.js" defer></script>
-
-
+    <div id="footer">
+    </div>
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+    window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')
+    </script>
+    <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
+    <script type="text/javascript" src="/static/js/plugins.js" defer></script>
 </body>
+
 </html>

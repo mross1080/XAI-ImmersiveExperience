@@ -40,60 +40,7 @@
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   <script>
 
-var meter = new Tone.Meter();
-Tone.Master.chain(meter);
 
-var grainplayer;
-function preload() {
-
-    console.log("loading");
-
-    var localURL = "./joy.wav"
-    var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
-grainplayer = new Tone.GrainPlayer({
-    "url": localURL,
-    "loop": true,
-    "grainSize": 1,
-    "overlap": 1,
-    "reverse": true,
-    "playbackRate": 1
-}).toMaster();
-console.log("done")
-grainplayer.start();
-}
-
-function setup() {
-console.log("Starting")
-grainplayer.start();
-}
-
-
-
-<!--function changeLights() {-->
-
-  <!--alert( "Handler for .cliaaack() called." );-->
-   <!--$.ajax({-->
-  <!--url: "/register",-->
-  <!--context: document.body-->
-<!--}).done(function() {-->
-  <!--$( this ).addClass( "done" );-->
-<!--});-->
-
-
-
-
-<!--}-->
-console.log("I'm being loaded")
-$( "#target" ).click(function() {
-
-  alert( "Handler for .click() called." );
-  $.ajax({
-  url: "/register",
-  context: document.body
-}).done(function() {
-  $( this ).addClass( "done" );
-});
-});
   </script>
 <!-- scripts -->
 <script src="/static/js/libs/modernizr-2.8.2.min.js"></script>
@@ -119,8 +66,7 @@ $( "#target" ).click(function() {
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <!--<li {% if request.endpoint == 'home' %} class="active" {% endif %}><a href="{{ url_for('home') }}">Home</a></li>-->
-            <!--<li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>-->
+          
 
           </ul>
 
@@ -132,9 +78,9 @@ $( "#target" ).click(function() {
     <main id="content" role="main" class="container">
 
 
-        <div onclick="controlMic()" class="checkbox">
-  <label>
-    <input id="micControl" type="checkbox" data-toggle="toggle">
+        <div  class="checkbox">
+  <label onclick="controlMic()">
+    <input  id="micControl" type="checkbox" data-toggle="toggle">
     Microphone State
   </label>
 </div>
@@ -275,13 +221,6 @@ $( "#target" ).click(function() {
   <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
   <script type="text/javascript" src="/static/js/plugins.js" defer></script>
 
-  <!-- Google Analytics - Change UA-XXXXX-X to be your site's ID -->
-  <script>
-  window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
-  Modernizr.load({
-    load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
-  });
-  </script>
 
 </body>
 </html>

@@ -12,15 +12,11 @@ print("on22")
 BEIGE = [10500, 20000, 65535, 3500]
 SADNESS_VIOLET = [46634, 65535, 65535, 3500]
 DARK_GREEN = [16173, 65535, 20000, 1500]
-# from flask.ext.sqlalchemy import SQLAlchemy
+
 import logging
 from logging import Formatter, FileHandler
-from forms import *
-import os
-import mido
 
-# outport = mido.open_output('To Live Live')
-outport = {}
+
 print("on2")
 # ----------------------------------------------------------------------------#
 # App Config.
@@ -44,10 +40,7 @@ def about():
     return render_template('pages/placeholder.about.html')
 
 
-@app.route('/login')
-def login():
-    form = LoginForm(request.form)
-    return render_template('forms/login.html', form=form)
+
 
 
 last_enabled = 1
@@ -70,15 +63,6 @@ def register():
     print request.data
     print request.values
     mood = request.args.get("mood", "")
-    #if mood:
-        #control_channel = mood_lookup[mood]
-        # Turn off old audio
-        # outport.send(mido.Message('control_change', control=11, value=70, channel=2))
-        # # Trigger new scene audio in ableton
-        # outport.send(mido.Message('control_change', control=control_channel, value=70, channel=2))
-
-        # last_enabled = control_channel
-        # last = last_enabled
     try:
         if mood is not "musicoff":
             setWaveformsOnGroup(current_bulb, mood)
@@ -90,16 +74,7 @@ def register():
     return jsonify({"hello": "you"})
 
 
-@app.route('/forgot')
-def forgot():
-    form = ForgotForm(request.form)
-    return render_template('forms/forgot.html', form=form)
 
-
-@app.route('/search')
-def search():
-    form = ForgotForm(request.form)
-    return render_template('forms/forgot.html', form=form)
 
 
 # Error handlers.
@@ -251,9 +226,9 @@ def trigger_dance_party(bulb_group):
             print("Here")
             note = random.randint(50, 70)
             bulb_group.set_color([random.randint(10000, 50000), 65535, 65535, 3500])
-            outport.send(mido.Message('note_on', note=note, channel=2))
+
             time.sleep(.3)
-            outport.send(mido.Message('note_off', note=note, channel=2))
+
 
         except Exception as e:
             print e
@@ -274,27 +249,7 @@ def rainbow(bulb, duration_secs=0.5, smooth=False):
         sleep(duration_secs)
 
 
-def toggle_device_power(device, interval=0.5, num_cycles=3):  # TEST
-    original_power_state = device.get_power()
-    device.set_power("off")
-    rapid = True if interval < 1 else False
-    for i in range(num_cycles):
-        device.set_power("on", rapid)
-        sleep(interval)
-        device.set_power("off", rapid)
-        sleep(interval)
-    device.set_power(original_power_state)
 
-
-def toggle_light_color(light, interval=0.5, num_cycles=3):
-    original_color = light.get_color()
-    rapid = True if interval < 1 else False
-    for i in range(num_cycles):
-        light.set_color(BLUE, rapid=rapid)
-        sleep(interval)
-        light.set_color(GREEN, rapid=rapid)
-        sleep(interval)
-    light.set_color(original_color)
 
 
 # original_colors  = [RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, PURPLE, PINK]
@@ -472,4 +427,25 @@ def messWithSettings():
     #         print("Selected {}".format(current_bulb.get_label()))
 
 
-print("done")
+def toggle_device_power(device, interval=0.5, num_cycles=3):  # TEST
+    original_power_state = device.get_power()
+    device.set_power("off")
+    rapid = True if interval < 1 else False
+    for i in range(num_cycles):
+        device.set_power("on", rapid)
+        sleep(interval)
+        device.set_power("off", rapid)
+        sleep(interval)
+    device.set_power(original_power_state)
+
+
+def toggle_light_color(light, interval=0.5, num_cycles=3):
+    original_color = light.get_color()
+    rapid = True if interval < 1 else False
+    for i in range(num_cycles):
+        light.set_color(BLUE, rapid=rapid)
+        sleep(interval)
+        light.set_color(GREEN, rapid=rapid)
+        sleep(interval)
+    light.set_color(original_color)
+

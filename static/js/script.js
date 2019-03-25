@@ -3,19 +3,18 @@ Tone.Master.chain(meter);
 
 currentState = true
 var players;
-// var localURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/vocals.wav"
 var localURL = "joy.wav"
-//var remoteURL = "https://s3.us-east-2.amazonaws.com/itpcloudassets/chants.wav"
 var remoteURL = "https://s3.amazonaws.com/impressionexperience/"
-
-
 
 var meter = new Tone.Meter();
 Tone.Master.chain(meter);
 var players;
 var grainplayer;
 
-var sampleUrls = { "happy": remoteURL + "joy.wav", "angry": remoteURL + "anger.wav", "rage": remoteURL + "anger.wav", "amazement": remoteURL + "anticipation.wav", "fear": remoteURL + "fear.wav", "sadness": remoteURL + "sad.mp3", "trust": remoteURL + "trust.wav" }
+var sampleUrls = {"ecstasy": remoteURL + "ecstasy.mp3","delight": remoteURL + "Delight.mp3", "happy": remoteURL + "joy.wav", "angry": remoteURL + "anger.wav", "start":remoteURL + "StartupEntrance.mp3",
+"rage": remoteURL + "BlurredDrone.mp3", "amazement": remoteURL + "anticipation.wav", "fear": remoteURL + "fear.wav","end":remoteURL + "ShutdownExit.mp3",
+"sadness": remoteURL + "sad.mp3", "trust": remoteURL + "trust.wav","neutral":remoteURL + "WhiteNoiseAmbiance.mp3","ambiance":remoteURL + "Pianodrone.mp3", }
+var keys = Object.keys(sampleUrls);
 
 var micInput = new Tone.UserMedia();
 
@@ -29,22 +28,18 @@ function preload() {
         players = new Tone.Players(sampleUrls, function() {
 
             console.log("Done loading Sample Files ")
-
+             $("#loadingModal").remove()
         }).toMaster();
 
 
     } catch (err) {
         console.log("error in player loading")
         console.log(err)
+        $("#scenestatusresponse").text("Errors in loading audio : " + err);
 
     }
 
 
-    //opening the input asks the user to activate their mic
-
-    //motu.open().then(function(){
-    //  console.log("mic ready")//promise resolves when input is available
-    //}).connect(autoWah).toMaster();
 
 }
 
@@ -63,8 +58,8 @@ function controlMic() {
 
         console.log("Turning mic on")
         var autoWah = new Tone.AutoWah(50, 6, -30).toMaster();
-        var reverb =new Tone.JCReverb(0.8).toMaster();
-var pitch = new Tone.PitchShift({"pitch":-36}).toMaster();
+        var reverb =new Tone.JCReverb(0.4).toMaster();
+var pitch = new Tone.PitchShift({"pitch":-16}).toMaster();
 
 var phaser = new Tone.Phaser({
 	"frequency" : 15,
@@ -74,13 +69,14 @@ var phaser = new Tone.Phaser({
         //opening the input asks the user to activate their mic
         micInput.open();
         micInput.connect(autoWah).connect(reverb).connect(phaser).connect(pitch).toMaster();
+        players.volume.value = -4;
 
 
 
     } else {
         console.log("closing mic")
         micInput.close();
-
+        players.volume.value = -1;
     }
 
 }
@@ -92,16 +88,17 @@ function changeLights(mood) {
     console.log("changing lights to : " + mood)
     //play as soon as the buffer is loaded
     players.stopAll();
-    if(mood != "neutral" && mood !="ecstasy" ) {
+    if(keys.includes(mood) ) {
 
     players.get(mood).start();
     }
 
     //
 
-    $.get("/register", { "mood": mood })
+    $.get("/changeMood", { "mood": mood })
         .done(function(data) {
             console.log(data)
+             $("#currentMood").text("Mood currently set to : " + mood);
             $("#scenestatusresponse").text("Scene Successfully changed to : " + mood);
         });
 }

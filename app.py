@@ -1,7 +1,6 @@
 # ----------------------------------------------------------------------------#
 # Imports
 # ----------------------------------------------------------------------------#
-import sys
 
 from copy import copy
 import random
@@ -26,10 +25,6 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 
-# db = SQLAlchemy(app)
-
-
-
 @app.route('/')
 def home():
     return render_template('pages/placeholder.home.html')
@@ -40,23 +35,12 @@ def about():
     return render_template('pages/placeholder.about.html')
 
 
-
-
-
 last_enabled = 1
 last = 3
 mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7,"rage":3,"ecstasy":10,"musicoff":11,"start":12}
 
-# enabled_channel_disable_map = {1:12}
-enabled_channel_disable_map = {1: 10, 2: 12, 3: 11}
 
-
-# enabled_channel_disable_map = {1:11}
-
-
-
-
-@app.route('/register')
+@app.route('/changeMood')
 def register():
     print 'changing'
     print request.args
@@ -71,10 +55,7 @@ def register():
         print "problms "
         print e
 
-    return jsonify({"hello": "you"})
-
-
-
+    return jsonify({"state": mood})
 
 
 # Error handlers.
@@ -133,6 +114,11 @@ mood_light_config = {
         "default_color": GREEN,
         "cycle_color": [0, 0, 0, 0]
     },
+    "end": {
+        "light_animation_type": "start",
+        "default_color": ORANGE,
+        "cycle_color": [0, 0, 0, 0]
+    },
     "trust": {
         "light_animation_type": "smooth",
         "default_color": SADNESS_VIOLET,
@@ -143,10 +129,20 @@ mood_light_config = {
         "default_color": WHITE,
         "cycle_color": BEIGE
     },
+    "ambiance": {
+        "light_animation_type": "smooth",
+        "default_color": WHITE,
+        "cycle_color": BEIGE
+    },
     "ecstasy": {
         "light_animation_type": "dance_party",
         "default_color": WHITE,
         "cycle_color": BEIGE
+    },
+    "delight": {
+        "light_animation_type": "smooth",
+        "default_color": WHITE,
+        "cycle_color": ORANGE
     },
     "sadness": {
         "light_animation_type": "smooth",
@@ -155,8 +151,6 @@ mood_light_config = {
     }
 
 }
-print("on333")
-
 
 
 def setWaveformsOnGroup(bulb_group, mood):
@@ -210,7 +204,7 @@ def setWaveformsOnGroup(bulb_group, mood):
                 single_device = bulb_group.devices[random_light_index]
                 single_device.set_power(65535)
                 single_device.set_color(default_color)
-                device.set_waveform(0, [0, 0, 0, 0], 1000, 10, 0, 4)
+                device.set_waveform(1, [0, 0, 0, 0], 3000, 7, -20000, 3)
                 break
             elif light_animation_type == "dance_party":
                 trigger_dance_party(bulb_group)
@@ -316,7 +310,7 @@ import time
 if __name__ == '__main__':
     retry_attempts = 5
     retry_count = 0
-    NOT_NEAR_BULBS = True
+    NOT_NEAR_BULBS = False
 
     print("Discovering lights...")
     lifx = LifxLAN(20)
@@ -359,6 +353,7 @@ if __name__ == '__main__':
             app.run()
         except Exception as e:
             if NOT_NEAR_BULBS:
+                print "Flag Enabled for not near LIFX Bulbs, nothing will happen right now with lighting"
                 app.run()
                 break
             print "hiii"

@@ -4,19 +4,21 @@
 
 from copy import copy
 import random
-print("on")
+
 from flask import Flask, render_template, request, jsonify
 from lifxlan import BLUE, GREEN, LifxLAN, sleep, RED, ORANGE, YELLOW, CYAN, PURPLE, PINK, time, Group, WHITE
-print("on22")
+
 BEIGE = [10500, 20000, 65535, 3500]
 SADNESS_VIOLET = [46634, 65535, 65535, 3500]
 DARK_GREEN = [16173, 65535, 20000, 1500]
+MUTED_YELLOW = [9000, 65535, 65535, 3500]
+
 
 import logging
 from logging import Formatter, FileHandler
 
 
-print("on2")
+
 # ----------------------------------------------------------------------------#
 # App Config.
 # ----------------------------------------------------------------------------#
@@ -110,14 +112,14 @@ mood_light_config = {
         "cycle_color": [0, 0, 0, 0]
     },
     "start": {
-        "light_animation_type": "start",
-        "default_color": GREEN,
-        "cycle_color": [0, 0, 0, 0]
+        "light_animation_type": "single",
+        "default_color": ORANGE,
+        "cycle_color": CYAN
     },
     "end": {
-        "light_animation_type": "start",
+        "light_animation_type": "urgency",
         "default_color": ORANGE,
-        "cycle_color": [0, 0, 0, 0]
+        "cycle_color": CYAN
     },
     "trust": {
         "light_animation_type": "smooth",
@@ -126,8 +128,8 @@ mood_light_config = {
     },
     "neutral": {
         "light_animation_type": "smooth",
-        "default_color": WHITE,
-        "cycle_color": BEIGE
+        "default_color": BEIGE,
+        "cycle_color": MUTED_YELLOW
     },
     "ambiance": {
         "light_animation_type": "smooth",
@@ -144,8 +146,28 @@ mood_light_config = {
         "default_color": WHITE,
         "cycle_color": ORANGE
     },
-    "sadness": {
+    "neutralcuriosity": {
         "light_animation_type": "smooth",
+        "default_color": MUTED_YELLOW,
+        "cycle_color": CYAN
+    },
+    "tension": {
+        "light_animation_type": "smooth",
+        "default_color": MUTED_YELLOW,
+        "cycle_color": SADNESS_VIOLET
+    },
+    "darkneutral": {
+        "light_animation_type": "single",
+        "default_color": CYAN,
+        "cycle_color": BLUE
+    },
+    "flash": {
+        "light_animation_type": "flash",
+        "default_color": CYAN,
+        "cycle_color": BLUE
+    },
+    "sadness": {
+        "light_animation_type": "single",
         "default_color": PURPLE,
         "cycle_color": BLUE
     }
@@ -170,7 +192,12 @@ def setWaveformsOnGroup(bulb_group, mood):
     light_animation_type = mood_light_config[mood]["light_animation_type"]
 
     count = 0;
-    if (count <= 2):
+    # There is no way to get any acknowledgements of state change from the LIFX bulbs without acutally making a request and asking what it's state is
+    # For now I'm using a fire multiple times that just sends the request three times to each bulb to up the probablility that it will be recieved
+
+    if light_animation_type == "flash":
+        turn_of_all_lights()
+    if (count <= 3):
         for device in bulb_group.devices:
             device.set_power(65535)
 
@@ -181,7 +208,10 @@ def setWaveformsOnGroup(bulb_group, mood):
             elif light_animation_type == "urgency":
                 device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
             elif light_animation_type == "strobe":
+                 device.set_color(default_color)
                  device.set_waveform(1, [0, 0, 0, 0], 300, 40, 0, 4)
+            elif light_animation_type == "flash":
+                 device.set_color(ORANGE)
             elif light_animation_type == "single":
                 turn_of_all_lights()
 
@@ -212,7 +242,7 @@ def setWaveformsOnGroup(bulb_group, mood):
 
 
         count+=1
-        time.sleep(1)
+        time.sleep(2)
 
 def trigger_dance_party(bulb_group):
     for i in range(60):
@@ -341,6 +371,7 @@ if __name__ == '__main__':
                 current_bulb = devices
                 #current_group = current_bulb
                 turn_of_all_lights()
+                app.run()
 
             else:
                 if retry_count > retry_attempts:
@@ -350,7 +381,8 @@ if __name__ == '__main__':
                     print "PROBLEM FINDING LIGHTS ATTEMPTING TO RECONNECT"
 
                     time.sleep(5)
-            app.run()
+
+
         except Exception as e:
             if NOT_NEAR_BULBS:
                 print "Flag Enabled for not near LIFX Bulbs, nothing will happen right now with lighting"

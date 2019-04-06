@@ -16,6 +16,49 @@ var startURL = "Pianodrone.mp3"
 
 var previouslyPlaying = "happy"
 
+
+var lightTargets = {
+    "ecstasy": "all",
+    "delight": "all",
+    "happy": "all",
+    "angry": "all",
+    "start": "all",
+    "rage": "all",
+    "amazement": "all",
+    "fear": "all",
+    "end": "all",
+    "sadness": "all",
+    "trust": "all",
+    "neutral": "all",
+    "darkneutral": "all",
+    "ambiance": "all",
+    "neutralcuriosity": "all",
+    "tension": "all"
+}
+
+
+
+var sampleLevels = {
+    "ecstasy": -2,
+    "delight": -2,
+    "happy": -2,
+    "angry": -2,
+    "start": -2,
+    "rage": -2,
+    "amazement": -2,
+    "fear": -2,
+    "end": -2,
+    "sadness": -2,
+    "trust": -2,
+    "neutral": -2,
+    "darkneutral": -2,
+    "ambiance": -2,
+    "neutralcuriosity": -2,
+    "tension": -2
+}
+
+
+
 var sampleUrls = {
     "ecstasy": remoteURL + "ecstasy.mp3",
     "delight": remoteURL + "Delight.mp3",
@@ -73,6 +116,20 @@ function setup() {
 }
 
 
+function changeVolume(action) {
+    if (action == "increase") {
+        players.volume.value = players.volume.value + 1
+
+
+    } else {
+
+        players.volume.value = players.volume.value - 1
+    }
+
+
+}
+
+
 
 
 
@@ -113,7 +170,18 @@ function controlMic() {
 }
 
 
+function targetLights(mood, targetSize) {
+    console.log("targeting : " + targetSize)
+    console.log("#" + mood + "TargetLabel")
+
+    $("#" + mood + "TargetLabel").text("Targeting : " + targetSize);
+    lightTargets[mood] = targetSize
+
+}
+
+
 var firstTrigger = true
+
 function changeLights(mood) {
 
     console.log("changing lights to : " + mood)
@@ -124,72 +192,79 @@ function changeLights(mood) {
     if (keys.includes(mood)) {
 
 
-//Panner object
-//Tone.BufferSource(url).toMaster();
+        //Panner object
+        //Tone.BufferSource(url).toMaster();
 
-//var osc = new Tone.LFO(0.5,-1,1).connect(panner.pan)
-//osc.start();
+        //var osc = new Tone.LFO(0.5,-1,1).connect(panner.pan)
+        //osc.start();
         players.get(mood).loop = true;
         players.get(mood).start();
         players.get(mood).volume = -7;
 
 
 
+
+
         //players.get(mood).rampTo(-Infinity,10);
 
 
-//        if (!firstTrigger) {
+        //        if (!firstTrigger) {
 
-            console.log("Moving from " + previouslyPlaying + " to " + mood)
-            var previousVolume = players.get(mood).volume.value;
-            var newTrackVolume = -7
+        console.log("Moving from " + previouslyPlaying + " to " + mood)
+        var previousVolume = players.get(mood).volume.value;
+        var newTrackVolume = -7
 
-            setTimeout(function() {
-                console.log("Stopping : " + previouslyPlaying)
-                players.get(previouslyPlaying).stop()
+        var sampleVolume = sampleLevels[mood]
+        players.get(mood).volume.rampTo(sampleVolume, 6);
+        players.get(previouslyPlaying).volume.rampTo(-Infinity, 6);
 
-                previouslyPlaying = mood
+        setTimeout(function() {
+            console.log("Stopping : " + previouslyPlaying)
+            players.get(previouslyPlaying).stop()
 
-            }, 5000)
+            previouslyPlaying = mood
 
-            setTimeout(function() {
-                console.log("setting new track volume to : " + newTrackVolume)
-                players.get(mood).volume.value = newTrackVolume++;
-                players.get(previouslyPlaying).volume.value = previousVolume -= 2;
+        }, 7000)
+
+        //            setTimeout(function() {
+        //                console.log("setting new track volume to : " + newTrackVolume)
+        //                players.get(mood).volume.value = newTrackVolume++;
+        //                players.get(previouslyPlaying).volume.value = previousVolume -= 2;
+        //
+        //
+        //                setTimeout(function() {
+        //                    console.log("setting new track volume to : " + newTrackVolume)
+        //                    players.get(mood).volume.value = newTrackVolume += 2;
+        //                    players.get(previouslyPlaying).volume.value = previousVolume -= 3;
+        //
+        //
+        //                    setTimeout(function() {
+        //                        console.log("setting new track volume to : " + newTrackVolume)
+        //                        players.get(mood).volume.value = newTrackVolume += 2;
+        //                        players.get(previouslyPlaying).volume.value = previousVolume -= 4;
+        //
+        //
+        //
+        //                    }, 2000)
+        //                }, 1500)
+        //            }, 1000)
 
 
-                setTimeout(function() {
-                    console.log("setting new track volume to : " + newTrackVolume)
-                    players.get(mood).volume.value = newTrackVolume += 2;
-                    players.get(previouslyPlaying).volume.value = previousVolume -= 3;
-
-
-                    setTimeout(function() {
-                        console.log("setting new track volume to : " + newTrackVolume)
-                        players.get(mood).volume.value = newTrackVolume += 2;
-                        players.get(previouslyPlaying).volume.value = previousVolume -= 4;
-
-
-
-                    }, 2000)
-                }, 1500)
-            }, 1000)
-
-
-//         firstTrigger = false
+        //         firstTrigger = false
 
 
 
     }
 
-    if (mood=="musicoff") {
+    if (mood == "musicoff") {
 
         players.stopAll();
     }
 
     //
+    console.log("setting " + lightTargets[mood] + " to " + mood)
 
-    $.get("/changeMood", { "mood": mood })
+    $.get("/changeMood", { "mood": mood, "lightTargets": lightTargets[mood] })
         .done(function(data) {
             console.log(data)
             $("#currentMood").text("Mood currently set to : " + mood);

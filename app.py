@@ -52,9 +52,10 @@ def register():
     print request.data
     print request.values
     mood = request.args.get("mood", "")
+    lightTargets = request.args.get("lightTargets", "")
     try:
         if mood is not "musicoff":
-            setWaveformsOnGroup(current_bulb, mood)
+            setWaveformsOnGroup(current_bulb, mood,lightTargets)
         # search_lights(mood)
     except Exception as e:
         print "problms "
@@ -92,6 +93,11 @@ mood_light_config = {
     "happy": {
         "light_animation_type": "smooth",
         "default_color": YELLOW,
+        "cycle_color": [15500, 30000, 65535, 3500]
+    },
+    "starkwhite": {
+        "light_animation_type": "stark",
+        "default_color": WHITE,
         "cycle_color": [15500, 30000, 65535, 3500]
     },
     "rage": {
@@ -180,7 +186,7 @@ mood_light_config = {
 
 
 
-def setWaveformsOnGroup(bulb_group, mood):
+def setWaveformsOnGroup(bulb_group, mood, lightTargets):
     # Strobe
     # bulb.set_color_all_lights(WHITE)
     # bulb.set_waveform_all_lights(0, [0,0,0,0], 500, 11, 0, 4)#
@@ -199,17 +205,29 @@ def setWaveformsOnGroup(bulb_group, mood):
     count = 0;
     # There is no way to get any acknowledgements of state change from the LIFX bulbs without acutally making a request and asking what it's state is
     # For now I'm using a fire multiple times that just sends the request three times to each bulb to up the probablility that it will be recieved
+    devices_to_control = bulb_group.devices
+    if (lightTargets == "single"):
+        devices_to_control = [lifx.get_device_by_name("Main")]
+        turn_of_all_lights()
+    elif (lightTargets == "middle"):
+        turn_of_all_lights()
+        devices_to_control = []
+        for light in middle_light_names:
+            devices_to_control.append(lifx.get_device_by_name(light))
 
-    if light_animation_type == "flash":
+
+
+
+    if light_animation_type == "start":
         turn_of_all_lights()
     # if light_animation_type == "smooth":
     #     turn_of_all_lights()
     if (count <= 5 ):
-        for device in bulb_group.devices:
+        for device in devices_to_control:
 
             device.set_power(65535)
 
-            device.set_color(default_color)
+            device.set_color(default_color,rapid=False)
 
             if light_animation_type == "smooth":
                 device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
@@ -220,6 +238,8 @@ def setWaveformsOnGroup(bulb_group, mood):
                  device.set_waveform(1, [0, 0, 0, 0], 300, 40, 0, 4)
             elif light_animation_type == "flash":
                  device.set_color(ORANGE)
+            elif light_animation_type == "stark":
+                 device.set_color(WHITE)
             elif light_animation_type == "single":
                 turn_of_all_lights()
 
@@ -233,17 +253,13 @@ def setWaveformsOnGroup(bulb_group, mood):
                 single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
                 break
             elif light_animation_type == "start":
-                turn_of_all_lights()
 
-                random_light_index = 0
-                if len(bulb_group.devices) > 1:
-                    random_light_index = random.randint(0, len(bulb_group.devices))
 
-                single_device = bulb_group.devices[random_light_index]
-                single_device.set_power(65535)
-                single_device.set_color(default_color)
+                # single_device = lifx.get_device_by_name("Forest_05")
+                device.set_power(65535)
+                device.set_color(default_color)
                 device.set_waveform(1, [0, 0, 0, 0], 3000, 7, -20000, 3)
-                break
+
             elif light_animation_type == "dance_party":
                 trigger_dance_party(bulb_group)
                 break
@@ -374,7 +390,7 @@ if __name__ == '__main__':
                         print "hi"
                         print e
                 #
-                setWaveformsOnGroup(devices, "neutral")
+                setWaveformsOnGroup(devices, "starkwhite","all")
                 b = devices.devices[0]
                 #
                 # b.set_color([16173, 65535, 30000, 3500])

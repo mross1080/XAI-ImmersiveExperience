@@ -68,38 +68,106 @@
                     <input id="micControl" type="checkbox" data-toggle="toggle">
                     Microphone State
                 </label>
+                <button type="button" onclick="changeVolume('increase')" class="btn btn-success">
+                    Increase Volume
+                </button>
+                <button type="button" onclick="changeVolume('decrease')" class="btn btn-danger">
+                    Decrease Volume
+                </button>
             </div>
             <div id="statediv">
                 <h3 id="currentMood">
                     Current Mood : "None"
 
                 </h3>
-
-
             </div>
-
-
             <div id="tardget">
                 <table class="table table-bordered">
                     <tbody>
+                      <thead>
+    <tr>
+        <th scope="col">Positive Moods</th>
+      <th scope="col">Sad Moods</th>
+      <th scope="col">Negative Moods</th>
+      <th scope="col">Neutral States</th>
+    </tr>
+  </thead>
                         <tr>
                             <td>
                                 <button type="button" onclick="changeLights('happy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Happy Sequence
                                 </button>
+                                <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="happyTargetLabel" class="label label-info">Targeting All</span>
+
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('happy','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('happy','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('happy','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>This induces a calming sway between orange and yellow</p>
                             </td>
                             <td>
                                 <button type="button" onclick="changeLights('sadness')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Sadness Sequence
                                 </button>
+                                             <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="sadnessTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('sadness','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('sadness','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('sadness','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>Smooth between purple and blue</p>
                             </td>
                             <td>
                                 <button type="button" onclick="changeLights('angry')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Anger Sequence
                                 </button>
+                                                                         <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="angryTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('angry','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('angry','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('angry','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>This induces a scary strobe light effect in red </p>
+                            </td>
+                                                        <td>
+                                <button type="button" onclick="changeLights('neutral')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Neutral Sequence
+                                </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="neutralTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('neutral','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('neutral','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('neutral','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
+                                <p>This is a neutral State, lights move from white to beige</p>
                             </td>
                         </tr>
                         <!--<br><br><br><br>-->
@@ -108,18 +176,57 @@
                                 <button type="button" onclick="changeLights('amazement')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Amazement Sequence
                                 </button>
+                                                                                                     <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="amazementTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('amazement','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('amazement','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('amazement','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>Cycle Quickly between a spectrum of warm colors</p>
                             </td>
                             <td>
                                 <button type="button" onclick="changeLights('trust')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Trust Sequence
                                 </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="trustTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('trust','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('trust','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('trust','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>Lights move from White to Violet</p>
                             </td>
                             <td>
                                 <button type="button" onclick="changeLights('fear')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Fear Sequence
                                 </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="fearTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('fear','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('fear','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('fear','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>This induced a strobe light effect in dark green</p>
                             </td>
                         </tr>
@@ -128,21 +235,60 @@
                                 <button type="button" onclick="changeLights('ecstasy')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Joy Sequence
                                 </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="ecstasyTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('ecstasy','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('ecstasy','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('ecstasy','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds<br>
                                     <strong>Warning<strong></strong> can not interrupt until sequence is over
                                 </p>
                             </td>
                             </td>
                             <td>
-                                <button type="button" onclick="changeLights('neutral')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
-                                    Trigger Neutral Sequence
+                                <button type="button" onclick="changeLights('tension')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Tension Sequence
                                 </button>
-                                <p>This is a neutral State, lights move from white to beige</p>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="tensionTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('tension','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('tension','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('tension','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
+                                <p>This is a neutral/tension/confusion State, Good if there are slight disagreements in the conversation</p>
                             </td>
                             <td>
                                 <button type="button" onclick="changeLights('rage')" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Rage Sequence
                                 </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="rageTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('rage','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('rage','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('rage','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>This is a seething rage, lights are gradually changing from red to orange</p>
                             </td>
                         </tr>
@@ -151,49 +297,65 @@
                                 <button type="button" onclick="changeLights('delight')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Delight Sequence
                                 </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="delightTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('delight','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('delight','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('delight','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>This is a Bouncy delightful orange and white sequence</p>
                             </td>
-                             <td>
-                                <button type="button" onclick="changeLights('tension')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
-                                    Trigger Tension Sequence
-                                </button>
-                                <p>This is a neutral/tension/confusion State, Good if there are slight disagreements in the conversation</p>
-                            </td>
-                             <td>
-                                <button type="button" onclick="changeLights('neutralcuriosity')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Trigger Neutral Curiosity Sequence
-                                </button>
-                                <p>This is a neutral/curious State, good for when asking questions to the participant </p>
-                            </td>
-                        </tr>
-                                                                <tr>
-                            <td>
+                          <td>
                                 <button type="button" onclick="changeLights('darkneutral')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                     Trigger Dark Neutral
                                 </button>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="darkneutralTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('darkneutral','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('darkneutral','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('darkneutral','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
                                 <p>This is turns on just a few lights light blue</p>
                             </td>
-
-                                                                                                <td>
-                                <button type="button" onclick="changeLights('flash')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Trigger Flash
+                            <td></td>
+                        </tr>
+                        <tr>
+                                                        <td>
+                                <button type="button" onclick="changeLights('neutralcuriosity')" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Neutral Curiosity Sequence
                                 </button>
-                                <p>Flash Lights for dramatic effect!</p>
+                                                                                                                    <br>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><label >Area to Target</label>
+                                      <span class="caret"></span></button>
+                                    <span id="neutralcuriosityTargetLabel" class="label label-info">Targeting All</span>
+                                    <br>
+
+                                      <ul class="dropdown-menu">
+                                        <li onclick="targetLights('neutralcuriosity','all')"><a href="#">All</a></li>
+                                        <li onclick="targetLights('neutralcuriosity','middle')"><a href="#">Middle</a></li>
+                                        <li onclick="targetLights('neutralcuriosity','single')"><a href="#">Single</a></li>
+                                      </ul>
+                                    </div>
+                                <p>This is a neutral/curious State, good for when asking questions to the participant </p>
                             </td>
-                                                                                                                                                                    <td>
-                                <button type="button" onclick="changeLights('starkwhite')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Stark White
-                                </button>
-                                <p> Stark White </p>
-                            </td>
 
 
-
-
-
-
-
-                                            </tr>
+                        </tr>
                     </tbody>
                 </table>
                 <br><br><br><br>
@@ -221,21 +383,25 @@
                         </tr>
                         <tr>
                             <td>
-                                <button type="button" onclick="changeLights('ambiance')" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
-                                    Trigger Musical Ambiance
+                                <button type="button" onclick="changeLights('flash')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Trigger Flash
                                 </button>
-                                <p>Starts Piano Dronen and neutral lighting</p>
+                                <p>Flash Lights for dramatic effect!</p>
                             </td>
-
+                            <td>
+                                <button type="button" onclick="changeLights('starkwhite')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Stark White
+                                </button>
+                                <p> Stark White </p>
+                            </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
         </main>
-               <!-- Button trigger modal -->
+        <!-- Button trigger modal -->
         <!-- Modal -->
-  <div class="modal show" id="loadingModal" role="dialog">
+        <div class="modal show" id="loadingModal" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -249,31 +415,30 @@
                         <h3>Loading External Audio Files</h3>
                         <h5>Please wait</h5>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-        <!-- Button trigger modal -->
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Scene Change Info</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="scenestatusresponse"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+    <!-- Button trigger modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Scene Change Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="scenestatusresponse"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div id="footer">
     </div>

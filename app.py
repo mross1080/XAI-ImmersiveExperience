@@ -40,6 +40,9 @@ def about():
 last_enabled = 1
 last = 3
 mood_lookup = {"happy": 1, "sadness": 2, "angry": 3, "fear": 4, "trust": 5, "amazement": 6,"neutral":7,"rage":3,"ecstasy":10,"musicoff":11,"start":12}
+current = ""
+
+
 
 
 @app.route('/changeMood')
@@ -85,7 +88,7 @@ if not app.debug:
     app.logger.info('errors')
 
 mood_light_config = {
-
+    "previous" : "default",
     "happy": {
         "light_animation_type": "smooth",
         "default_color": YELLOW,
@@ -143,7 +146,7 @@ mood_light_config = {
     },
     "delight": {
         "light_animation_type": "smooth",
-        "default_color": WHITE,
+        "default_color": BEIGE,
         "cycle_color": ORANGE
     },
     "neutralcuriosity": {
@@ -175,6 +178,8 @@ mood_light_config = {
 }
 
 
+
+
 def setWaveformsOnGroup(bulb_group, mood):
     # Strobe
     # bulb.set_color_all_lights(WHITE)
@@ -197,8 +202,11 @@ def setWaveformsOnGroup(bulb_group, mood):
 
     if light_animation_type == "flash":
         turn_of_all_lights()
-    if (count <= 3):
+    # if light_animation_type == "smooth":
+    #     turn_of_all_lights()
+    if (count <= 5 ):
         for device in bulb_group.devices:
+
             device.set_power(65535)
 
             device.set_color(default_color)
@@ -217,8 +225,8 @@ def setWaveformsOnGroup(bulb_group, mood):
 
                 random_light_index = 0
                 if len(bulb_group.devices) > 1:
-                    random_light_index = random.randint(0, len(bulb_group.devices))
-
+                    random_light_index = random.randint(0, len(bulb_group.devices)-1)
+                print bulb_group.devices[random_light_index]
                 single_device = bulb_group.devices[random_light_index]
                 single_device.set_power(65535)
                 single_device.set_color(default_color)
@@ -243,6 +251,8 @@ def setWaveformsOnGroup(bulb_group, mood):
 
         count+=1
         time.sleep(2)
+    mood_light_config["previous"] = light_animation_type
+    # previous_state = light_animation_type
 
 def trigger_dance_party(bulb_group):
     for i in range(60):
@@ -349,6 +359,7 @@ if __name__ == '__main__':
         # get devices
         try:
             devices = lifx.get_devices_by_group("Forest")
+            # previous_state = "default"
             if devices:
                 # Setup flag for at home or at wildrence
 

@@ -4,7 +4,8 @@ Tone.Master.chain(meter);
 currentState = true
 var players;
 var localURL = "joy.wav"
-var remoteURL = "https://s3.amazonaws.com/impressionexperience/"
+//var remoteURL = "https://s3.amazonaws.com/impressionexperience/"
+var remoteURL = "http://localhost:5005/"
 
 var meter = new Tone.Meter();
 Tone.Master.chain(meter);
@@ -37,24 +38,26 @@ var lightTargets = {
 }
 
 
+var normalLevel = -3;
+var extremeLevel = -4
 
 var sampleLevels = {
-    "ecstasy": -2,
-    "delight": -2,
-    "happy": -2,
-    "angry": -2,
-    "start": -2,
-    "rage": -2,
-    "amazement": -2,
-    "fear": -2,
-    "end": -2,
-    "sadness": -2,
-    "trust": -2,
-    "neutral": -2,
-    "darkneutral": -2,
-    "ambiance": -2,
-    "neutralcuriosity": -2,
-    "tension": -2
+    "ecstasy": -3,
+    "delight": -3,
+    "happy": -3,
+    "angry": -3,
+    "start": -3,
+    "rage": -4,
+    "amazement": -3,
+    "fear": -4,
+    "end": -3,
+    "sadness": -3,
+    "trust": -3,
+    "neutral": -4,
+    "darkneutral": -4,
+    "ambiance": -4,
+    "neutralcuriosity": -3,
+    "tension": -3
 }
 
 
@@ -90,8 +93,16 @@ function preload() {
 
         players = new Tone.Players(sampleUrls, function() {
 
-            console.log("Done loading Sample Files ")
+            console.log("Done loading Sample Files !")
+            for (var i in keys) {
+                console.log("setting " + players.get(keys[i]))
+                players.get(keys[i]).volume.value = -Infinity
+            }
+
+
+
             $("#loadingModal").remove()
+
 
 
         }).toMaster();
@@ -215,8 +226,8 @@ function changeLights(mood) {
         var newTrackVolume = -7
 
         var sampleVolume = sampleLevels[mood]
-        players.get(mood).volume.rampTo(sampleVolume, 6);
-        players.get(previouslyPlaying).volume.rampTo(-Infinity, 6);
+        players.get(mood).volume.rampTo(sampleVolume, 3);
+        players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
 
         setTimeout(function() {
             console.log("Stopping : " + previouslyPlaying)
@@ -226,31 +237,6 @@ function changeLights(mood) {
 
         }, 7000)
 
-        //            setTimeout(function() {
-        //                console.log("setting new track volume to : " + newTrackVolume)
-        //                players.get(mood).volume.value = newTrackVolume++;
-        //                players.get(previouslyPlaying).volume.value = previousVolume -= 2;
-        //
-        //
-        //                setTimeout(function() {
-        //                    console.log("setting new track volume to : " + newTrackVolume)
-        //                    players.get(mood).volume.value = newTrackVolume += 2;
-        //                    players.get(previouslyPlaying).volume.value = previousVolume -= 3;
-        //
-        //
-        //                    setTimeout(function() {
-        //                        console.log("setting new track volume to : " + newTrackVolume)
-        //                        players.get(mood).volume.value = newTrackVolume += 2;
-        //                        players.get(previouslyPlaying).volume.value = previousVolume -= 4;
-        //
-        //
-        //
-        //                    }, 2000)
-        //                }, 1500)
-        //            }, 1000)
-
-
-        //         firstTrigger = false
 
 
 

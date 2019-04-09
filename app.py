@@ -121,7 +121,7 @@ mood_light_config = {
         "cycle_color": [0, 0, 0, 0]
     },
     "start": {
-        "light_animation_type": "single",
+        "light_animation_type": "start",
         "default_color": ORANGE,
         "cycle_color": CYAN
     },
@@ -207,7 +207,7 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
     # For now I'm using a fire multiple times that just sends the request three times to each bulb to up the probablility that it will be recieved
     devices_to_control = bulb_group.devices
     if (lightTargets == "single"):
-        devices_to_control = [lifx.get_device_by_name("Main")]
+        devices_to_control = [lifx.get_device_by_name(single_group_name[0])]
         turn_of_all_lights()
     elif (lightTargets == "middle"):
         turn_of_all_lights()
@@ -219,7 +219,10 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
 
 
     if light_animation_type == "start":
+        devices_to_control = [lifx.get_device_by_name(single_group_name[0])]
+
         turn_of_all_lights()
+
     # if light_animation_type == "smooth":
     #     turn_of_all_lights()
     if (count <= 5 ):
@@ -255,7 +258,7 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
             elif light_animation_type == "start":
 
 
-                # single_device = lifx.get_device_by_name("Forest_05")
+                # single_device = lifx.get_device_by_name("Forest_08")
                 device.set_power(65535)
                 device.set_color(default_color)
                 device.set_waveform(1, [0, 0, 0, 0], 3000, 7, -20000, 3)
@@ -354,7 +357,8 @@ def breathe_lights_single(light):
 # ----------------------------------------------------------------------------#
 
 front_group_names = ["Forest_01", "Forest_02", "Forest_03"]
-middle_light_names = ["Forest_02", "Forest_05", "Forest_08", "Forest_11", "Forest_14"]
+middle_light_names = ["Forest_08",  "Forest_11g"]
+single_group_name = ["Forest_11"]
 front_group = []
 middle_group = []
 current_bulb = {}

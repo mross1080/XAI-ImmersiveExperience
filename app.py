@@ -206,22 +206,21 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
     # There is no way to get any acknowledgements of state change from the LIFX bulbs without acutally making a request and asking what it's state is
     # For now I'm using a fire multiple times that just sends the request three times to each bulb to up the probablility that it will be recieved
     devices_to_control = bulb_group.devices
-    if (lightTargets == "single"):
-        devices_to_control = [lifx.get_device_by_name(single_group_name[0])]
+    if (lightTargets == "single" or lightTargets == "start"):
+        devices_to_control = single_group
         turn_of_all_lights()
     elif (lightTargets == "middle"):
         turn_of_all_lights()
-        devices_to_control = []
-        for light in middle_light_names:
-            devices_to_control.append(lifx.get_device_by_name(light))
+        devices_to_control = middle_group
 
 
 
 
-    if light_animation_type == "start":
-        devices_to_control = [lifx.get_device_by_name(single_group_name[0])]
 
-        turn_of_all_lights()
+    # if light_animation_type == "start":
+    #     devices_to_control = [lifx.get_device_by_name(single_group_name[0])]
+    #
+    #     turn_of_all_lights()
 
     # if light_animation_type == "smooth":
     #     turn_of_all_lights()
@@ -358,9 +357,10 @@ def breathe_lights_single(light):
 
 front_group_names = ["Forest_01", "Forest_02", "Forest_03"]
 middle_light_names = ["Forest_08",  "Forest_11g"]
-single_group_name = ["Forest_11"]
+single_group_name = "Forest_11"
 front_group = []
 middle_group = []
+single_group = []
 current_bulb = {}
 current_group = {}
 
@@ -381,6 +381,13 @@ if __name__ == '__main__':
             devices = lifx.get_devices_by_group("Forest")
             # previous_state = "default"
             if devices:
+
+                # These pseudo groups are used because we are unable to create new groups at the theater space
+                single_group = [lifx.get_device_by_name(single_group_name)]
+
+                for light_name in middle_light_names:
+                    middle_group.append(lifx.get_device_by_name(light_name))
+
                 # Setup flag for at home or at wildrence
 
                 for device in devices.devices:

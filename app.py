@@ -55,7 +55,7 @@ def register():
     lightTargets = request.args.get("lightTargets", "")
     try:
         if mood is not "musicoff":
-            setWaveformsOnGroup(current_bulb, mood,lightTargets)
+            setWaveformsOnGroup(active_bulbs, mood,lightTargets)
         # search_lights(mood)
     except Exception as e:
         print "problms "
@@ -214,8 +214,8 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
             print e
             print "Problem in turning off lights Reconnecting"
             devices = lifx.get_devices_by_group("Forest")
-            current_bulb = devices
-            bulb_group = current_bulb
+            active_bulbs = devices
+            bulb_group = active_bulbs
 
     elif (lightTargets == "middle"):
         try:
@@ -224,8 +224,8 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
             print e
             print "Problem in turning off lights Reconnecting"
             devices = lifx.get_devices_by_group("Forest")
-            current_bulb = devices
-            bulb_group = current_bulb
+            active_bulbs = devices
+            bulb_group = active_bulbs
 
         devices_to_control = middle_group
 
@@ -285,8 +285,8 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                 print e
                 print "Problem in setting light waveform Reconnecting"
                 devices = lifx.get_devices_by_group("Forest")
-                current_bulb = devices
-                bulb_group = current_bulb
+                active_bulbs = devices
+                bulb_group = active_bulbs
 
         count+=1
         time.sleep(4)
@@ -309,7 +309,7 @@ def trigger_dance_party(bulb_group):
 
 
 def turn_of_all_lights():
-    for device in current_bulb:
+    for device in active_bulbs:
         device.set_power(0)
 
 
@@ -371,7 +371,7 @@ single_group_name = "Forest_11"
 front_group = []
 middle_group = []
 single_group = []
-current_bulb = {}
+active_bulbs = {}
 current_group = {}
 
 
@@ -386,7 +386,7 @@ def reconnect_to_bulbs():
 
             for light_name in middle_light_names:
                 middle_group.append(lifx.get_device_by_name(light_name))
-            current_bulb = devices
+            active_bulbs = devices
         except Exception as e:
             print "Exception in setting up individual grouped areas "
             print e
@@ -395,12 +395,12 @@ def reconnect_to_bulbs():
         return False
 
 import time
-
+currently_running = False
 # Default port:
 if __name__ == '__main__':
     retry_attempts = 5
     retry_count = 0
-    NOT_NEAR_BULBS = False
+    NOT_NEAR_BULBS = True
 
     print("Discovering lights...")
     lifx = LifxLAN(20)
@@ -421,28 +421,11 @@ if __name__ == '__main__':
                 for light_name in middle_light_names:
                     middle_group.append(lifx.get_device_by_name(light_name))
 
-                # Setup flag for at home or at wildrence
-
-                # for device in devices.devices:
-                #     try:
-                #
-                #         device.set_power(65535)
-                #         device.set_color(BLUE)
-                #
-                #         #trigger_dance_party(devices)
-                #     except Exception as e:
-                #         print "hi"
-                #         print e
-                #
-                # turn_of_all_lights()
-
-                current_bulb = devices.devices
-                setWaveformsOnGroup(current_bulb, "starkwhite","all")
-
-
-                #current_group = current_bulb
+                active_bulbs = devices.devices
+                setWaveformsOnGroup(active_bulbs, "starkwhite","all")
+                
                 print("Starting app")
-                app.run()
+                app.run(use_reloader=False)
                 time.sleep(5)
 
             else:
@@ -478,16 +461,16 @@ if __name__ == '__main__':
 
 def messWithSettings():
     print "hi"
-    # single_bulb  = current_bulb.devices[random.randint(0,8)]
+    # single_bulb  = active_bulbs.devices[random.randint(0,8)]
     # current_group.set_power(65535)
     # single_bulb.set_color([50486, 65535, 65535, 100])
-    # # current_bulb.devices[random.randint(0,8)].set_color(PURPLE)
+    # # active_bulbs.devices[random.randint(0,8)].set_color(PURPLE)
     # for device in current_group.devices:
     #     if device.get_label() in middle_light_names:
     #         middle_group.append(device)
     # while True:
-    #     current_bulb.set_power(0)
-    #     single_bulb = current_bulb.devices[random.randint(0, 8)]
+    #     active_bulbs.set_power(0)
+    #     single_bulb = active_bulbs.devices[random.randint(0, 8)]
     #     single_bulb.set_power(65535)
     #     single_bulb.set_color([50486, 65535, 65535, 100])
     #     time.sleep(1)
@@ -508,8 +491,8 @@ def messWithSettings():
     #     time.sleep(1)
 
     # for x in range(10000):
-    # current_bulb.set_color(	[46634, 65535, 65535, 3500])
-    # current_bulb.set_color(PURPLE)
+    # active_bulbs.set_color(	[46634, 65535, 65535, 3500])
+    # active_bulbs.set_color(PURPLE)
     # g = lifx.get_devices_by_group("Forest")
     # breathe_lights(g)
     # breathe_lights_single(devices[0])
@@ -519,12 +502,12 @@ def messWithSettings():
     #
     #     if device.get_label() == "Forest_05" or True:
     #         # if device.get_label() == "A Small Lamp":
-    #         current_bulb = device
+    #         active_bulbs = device
     #         # device.set_waveform(True, GREEN, 0.5, 3, 0.5, 3)
     #         breathe_lights()
     #
     #         # bulb = devices[2]
-    #         print("Selected {}".format(current_bulb.get_label()))
+    #         print("Selected {}".format(active_bulbs.get_label()))
 
 
 def toggle_device_power(device, interval=0.5, num_cycles=3):  # TEST

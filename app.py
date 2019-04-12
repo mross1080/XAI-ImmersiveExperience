@@ -47,10 +47,10 @@ current = ""
 
 @app.route('/changeMood')
 def register():
-    print 'changing'
-    print request.args
+    # print 'changing'
+    # print request.args
     print request.data
-    print request.values
+    # print request.values
     mood = request.args.get("mood", "")
     lightTargets = request.args.get("lightTargets", "")
     try:
@@ -147,12 +147,12 @@ mood_light_config = {
     },
     "ecstasy": {
         "light_animation_type": "smooth",
-        "default_color": WHITE,
-        "cycle_color": BEIGE
+        "default_color": MUTED_YELLOW,
+        "cycle_color": SADNESS_VIOLET
     },
     "delight": {
         "light_animation_type": "smooth",
-        "default_color": BEIGE,
+        "default_color": YELLOW,
         "cycle_color": ORANGE
     },
     "neutralcuriosity": {
@@ -162,7 +162,7 @@ mood_light_config = {
     },
     "tension": {
         "light_animation_type": "smooth",
-        "default_color": MUTED_YELLOW,
+        "default_color": BEIGE,
         "cycle_color": SADNESS_VIOLET
     },
     "darkneutral": {
@@ -205,12 +205,28 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
     count = 0;
     # There is no way to get any acknowledgements of state change from the LIFX bulbs without acutally making a request and asking what it's state is
     # For now I'm using a fire multiple times that just sends the request three times to each bulb to up the probablility that it will be recieved
-    devices_to_control = bulb_group.devices
+    devices_to_control = bulb_group
     if (lightTargets == "single" or lightTargets == "start"):
         devices_to_control = single_group
-        turn_of_all_lights()
+        try:
+            turn_of_all_lights()
+        except Exception as e:
+            print e
+            print "Problem in turning off lights Reconnecting"
+            devices = lifx.get_devices_by_group("Forest")
+            current_bulb = devices
+            bulb_group = current_bulb
+
     elif (lightTargets == "middle"):
-        turn_of_all_lights()
+        try:
+            turn_of_all_lights()
+        except Exception as e:
+            print e
+            print "Problem in turning off lights Reconnecting"
+            devices = lifx.get_devices_by_group("Forest")
+            current_bulb = devices
+            bulb_group = current_bulb
+
         devices_to_control = middle_group
 
 
@@ -224,52 +240,58 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
 
     # if light_animation_type == "smooth":
     #     turn_of_all_lights()
-    if (count <= 5 ):
+    if (count <= 2 ):
         for device in devices_to_control:
-
-            device.set_power(65535)
-
-            device.set_color(default_color,rapid=False)
-
-            if light_animation_type == "smooth":
-                device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
-            elif light_animation_type == "urgency":
-                device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
-            elif light_animation_type == "strobe":
-                 device.set_color(default_color)
-                 device.set_waveform(1, [0, 0, 0, 0], 300, 40, 0, 4)
-            elif light_animation_type == "flash":
-                 device.set_color(ORANGE)
-            elif light_animation_type == "stark":
-                 device.set_color(WHITE)
-            elif light_animation_type == "single":
-                turn_of_all_lights()
-
-                random_light_index = 0
-                if len(bulb_group.devices) > 1:
-                    random_light_index = random.randint(0, len(bulb_group.devices)-1)
-                print bulb_group.devices[random_light_index]
-                single_device = bulb_group.devices[random_light_index]
-                single_device.set_power(65535)
-                single_device.set_color(default_color)
-                single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
-                break
-            elif light_animation_type == "start":
-
-
-                # single_device = lifx.get_device_by_name("Forest_08")
+            try:
                 device.set_power(65535)
-                device.set_color(default_color)
-                device.set_waveform(1, [0, 0, 0, 0], 3000, 7, -20000, 3)
 
-            elif light_animation_type == "dance_party":
-                trigger_dance_party(bulb_group)
-                break
+                device.set_color(default_color,rapid=False)
 
+                if light_animation_type == "smooth":
+                    device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
+                elif light_animation_type == "urgency":
+                    device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
+                elif light_animation_type == "strobe":
+                     device.set_color(default_color)
+                     device.set_waveform(1, [0, 0, 0, 0], 300, 40, 0, 4)
+                elif light_animation_type == "flash":
+                     device.set_color(ORANGE)
+                elif light_animation_type == "stark":
+                     device.set_color(WHITE)
+                elif light_animation_type == "single":
+                    turn_of_all_lights()
+
+                    random_light_index = 0
+                    if len(bulb_group) > 1:
+                        random_light_index = random.randint(0, len(bulb_group)-1)
+                    # print bulb_group[random_light_index]
+                    single_device = bulb_group[random_light_index]
+                    single_device.set_power(65535)
+                    single_device.set_color(default_color)
+                    single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
+                    break
+                elif light_animation_type == "start":
+
+
+                    # single_device = lifx.get_device_by_name("Forest_08")
+                    device.set_power(65535)
+                    device.set_color(default_color)
+                    device.set_waveform(1, [0, 0, 0, 0], 3000, 7, -20000, 3)
+
+                elif light_animation_type == "dance_party":
+                    trigger_dance_party(bulb_group)
+                    break
+            except Exception as e:
+                print e
+                print "Problem in setting light waveform Reconnecting"
+                devices = lifx.get_devices_by_group("Forest")
+                current_bulb = devices
+                bulb_group = current_bulb
 
         count+=1
-        time.sleep(2)
+        time.sleep(4)
     mood_light_config["previous"] = light_animation_type
+    print("Done setting up new light sequence")
     # previous_state = light_animation_type
 
 def trigger_dance_party(bulb_group):
@@ -287,20 +309,8 @@ def trigger_dance_party(bulb_group):
 
 
 def turn_of_all_lights():
-    for device in current_bulb.devices:
+    for device in current_bulb:
         device.set_power(0)
-
-def rainbow(bulb, duration_secs=0.5, smooth=False):
-    colors = [RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, PURPLE, PINK]
-    colors = [RED, ORANGE]
-
-    transition_time_ms = duration_secs * 1000 if smooth else 0
-    rapid = True if duration_secs < 1 else False
-    for color in colors:
-        bulb.set_color(color, transition_time_ms, rapid)
-        sleep(duration_secs)
-
-
 
 
 
@@ -354,15 +364,35 @@ def breathe_lights_single(light):
 # ----------------------------------------------------------------------------#
 # Launch.
 # ----------------------------------------------------------------------------#
-
+back_group_names = ["Forest_14"]
 front_group_names = ["Forest_01", "Forest_02", "Forest_03"]
-middle_light_names = ["Forest_08",  "Forest_11g"]
+middle_light_names = ["Forest_08",  "Forest_11","Forest_14"]
 single_group_name = "Forest_11"
 front_group = []
 middle_group = []
 single_group = []
 current_bulb = {}
 current_group = {}
+
+
+def reconnect_to_bulbs():
+    devices = lifx.get_devices_by_group("Forest")
+    # previous_state = "default"
+    if devices:
+        try:
+
+            # These pseudo groups are used because we are unable to create new groups at the theater space
+            single_group = [lifx.get_device_by_name(single_group_name)]
+
+            for light_name in middle_light_names:
+                middle_group.append(lifx.get_device_by_name(light_name))
+            current_bulb = devices
+        except Exception as e:
+            print "Exception in setting up individual grouped areas "
+            print e
+        return True
+    else:
+        return False
 
 import time
 
@@ -375,11 +405,14 @@ if __name__ == '__main__':
     print("Discovering lights...")
     lifx = LifxLAN(20)
     while True:
+        print("At top of start app loop")
 
         # get devices
         try:
+            # if reconnect_to_bulbs():
+
             devices = lifx.get_devices_by_group("Forest")
-            # previous_state = "default"
+            # # previous_state = "default"
             if devices:
 
                 # These pseudo groups are used because we are unable to create new groups at the theater space
@@ -390,26 +423,27 @@ if __name__ == '__main__':
 
                 # Setup flag for at home or at wildrence
 
-                for device in devices.devices:
-                    try:
-
-                        device.set_power(65535)
-                        device.set_color(BLUE)
-
-                        #trigger_dance_party(devices)
-                    except Exception as e:
-                        print "hi"
-                        print e
+                # for device in devices.devices:
+                #     try:
                 #
-                setWaveformsOnGroup(devices, "starkwhite","all")
-                b = devices.devices[0]
+                #         device.set_power(65535)
+                #         device.set_color(BLUE)
                 #
-                # b.set_color([16173, 65535, 30000, 3500])
-                # # b.set_waveform(1, PURPLE, 2000, 10, 0, 2)
-                current_bulb = devices
+                #         #trigger_dance_party(devices)
+                #     except Exception as e:
+                #         print "hi"
+                #         print e
+                #
+                # turn_of_all_lights()
+
+                current_bulb = devices.devices
+                setWaveformsOnGroup(current_bulb, "starkwhite","all")
+
+
                 #current_group = current_bulb
-                turn_of_all_lights()
+                print("Starting app")
                 app.run()
+                time.sleep(5)
 
             else:
                 if retry_count > retry_attempts:
@@ -426,8 +460,9 @@ if __name__ == '__main__':
                 print "Flag Enabled for not near LIFX Bulbs, nothing will happen right now with lighting"
                 app.run()
                 break
-            print "hiii"
+            print "Exception Found in Initializing Group Bulbs Array"
             print e
+            time.sleep(4)
 
 
 

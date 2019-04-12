@@ -5,8 +5,8 @@ currentState = true
 var players;
 var localURL = "joy.wav"
 //var remoteURL = "https://s3.amazonaws.com/impressionexperience/"
-var remoteURL = "http://localhost:5005/"
-
+//var remoteURL = "http://localhost:5005/"
+var remoteURL = "/static/css/"
 var meter = new Tone.Meter();
 Tone.Master.chain(meter);
 var players;
@@ -64,14 +64,13 @@ var sampleLevels = {
 
 var sampleUrls = {
     "ecstasy": remoteURL + "ecstasy.mp3",
-    "delight": remoteURL + "Delight.mp3",
+    "delight": "/static/css/" + "Delight.mp3",
     "happy": remoteURL + "joy.wav",
     "angry": remoteURL + "anger.wav",
     "start": remoteURL + startURL,
     "rage": remoteURL + "BlurredDrone.mp3",
     "amazement": remoteURL + "anticipation.wav",
     "fear": remoteURL + "fear.wav",
-    "end": remoteURL + "ShutdownExit.mp3",
     "sadness": remoteURL + "sad.mp3",
     "trust": remoteURL + "trust.wav",
     "neutral": remoteURL + neutralWobble,
@@ -168,6 +167,7 @@ function controlMic() {
 
         //        micInput.connect(reverb).connect(pitch).toMaster();
         micInput.toMaster();
+
         players.volume.value = -4;
 
 
@@ -201,7 +201,7 @@ function changeLights(mood) {
 
 
     if (keys.includes(mood)) {
-
+        if (mood != previouslyPlaying) {
 
         //Panner object
         //Tone.BufferSource(url).toMaster();
@@ -211,9 +211,6 @@ function changeLights(mood) {
         players.get(mood).loop = true;
         players.get(mood).start();
         players.get(mood).volume = -7;
-
-
-
 
 
         //players.get(mood).rampTo(-Infinity,10);
@@ -236,10 +233,21 @@ function changeLights(mood) {
             previouslyPlaying = mood
 
         }, 7000)
+}
 
 
 
+    } else {
 
+                players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
+
+        setTimeout(function() {
+            console.log("Stopping : " + previouslyPlaying)
+            players.get(previouslyPlaying).stop()
+
+            previouslyPlaying = mood
+
+        }, 7000)
     }
 
     if (mood == "musicoff") {

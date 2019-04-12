@@ -146,7 +146,7 @@ mood_light_config = {
         "cycle_color": BEIGE
     },
     "ecstasy": {
-        "light_animation_type": "dance_party",
+        "light_animation_type": "smooth",
         "default_color": WHITE,
         "cycle_color": BEIGE
     },

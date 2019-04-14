@@ -228,11 +228,7 @@ function changeLights(mood) {
                 previouslyPlaying = mood
 
             }, 7000)
-        }
-
-
-
-    } else {
+        }else {
 
         players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
 
@@ -243,6 +239,10 @@ function changeLights(mood) {
             previouslyPlaying = mood
 
         }, 7000)
+    }
+
+
+
     }
 
     if (mood == "musicoff") {

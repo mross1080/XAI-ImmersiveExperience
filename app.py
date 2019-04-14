@@ -121,7 +121,7 @@ mood_light_config = {
         "cycle_color": [0, 0, 0, 0]
     },
     "start": {
-        "light_animation_type": "start",
+        "light_animation_type": "single",
         "default_color": ORANGE,
         "cycle_color": CYAN
     },
@@ -261,14 +261,14 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                 elif light_animation_type == "single":
                     turn_of_all_lights()
 
-                    random_light_index = 0
-                    if len(bulb_group) > 1:
-                        random_light_index = random.randint(0, len(bulb_group)-1)
+                    # random_light_index = 0
+                    # if len(bulb_group) > 1:
+                    #     random_light_index = random.randint(0, len(bulb_group)-1)
                     # print bulb_group[random_light_index]
-                    single_device = bulb_group[random_light_index]
-                    single_device.set_power(65535)
-                    single_device.set_color(default_color)
-                    single_device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
+                    # single_device = bulb_group[random_light_index]
+                    device.set_power(65535)
+                    device.set_color(default_color)
+                    device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
                     break
                 elif light_animation_type == "start":
 

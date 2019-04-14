@@ -414,6 +414,7 @@ if __name__ == '__main__':
             devices = lifx.get_devices_by_group("Forest")
             # # previous_state = "default"
             if devices:
+                print "Operating with {} LIFX Bulbs".format(len(devices.devices))
 
                 # These pseudo groups are used because we are unable to create new groups at the theater space
                 single_group = [lifx.get_device_by_name(single_group_name)]

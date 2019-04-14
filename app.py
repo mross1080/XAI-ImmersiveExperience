@@ -400,7 +400,7 @@ currently_running = False
 if __name__ == '__main__':
     retry_attempts = 5
     retry_count = 0
-    NOT_NEAR_BULBS = True
+    NOT_NEAR_BULBS = False
 
     print("Discovering lights...")
     lifx = LifxLAN(20)

@@ -149,23 +149,18 @@ function controlMic() {
 
 
         console.log("Turning mic on")
-        //var autoWah = new Tone.AutoWah(50, 6, -30).toMaster();
-        var reverb = new Tone.JCReverb(0.7).toMaster();
-        var pitch = new Tone.PitchShift({ "pitch": -40 }).toMaster();
-
-        //var phaser = new Tone.Phaser({
-        //  "frequency" : 15,
-        //  "octaves" : 5,
-        //  "baseFrequency" : 1000
-        //}).toMaster();
-        //opening the input asks the user to activate their mic
+        var reverb = new Tone.Freeverb({
+            roomSize: 0.7,
+            dampening: 3000
+        }).toMaster();
+        var pitch = new Tone.PitchShift({ "pitch": -60 }).toMaster();
 
 
 
         micInput.open();
 
 
-        //        micInput.connect(reverb).connect(pitch).toMaster();
+        micInput.connect(reverb).connect(pitch).toMaster();
         micInput.toMaster();
 
         players.volume.value = -4;
@@ -203,43 +198,43 @@ function changeLights(mood) {
     if (keys.includes(mood)) {
         if (mood != previouslyPlaying) {
 
-        //Panner object
-        //Tone.BufferSource(url).toMaster();
+            //Panner object
+            //Tone.BufferSource(url).toMaster();
 
-        //var osc = new Tone.LFO(0.5,-1,1).connect(panner.pan)
-        //osc.start();
-        players.get(mood).loop = true;
-        players.get(mood).start();
-        players.get(mood).volume = -7;
-
-
-        //players.get(mood).rampTo(-Infinity,10);
+            //var osc = new Tone.LFO(0.5,-1,1).connect(panner.pan)
+            //osc.start();
+            players.get(mood).loop = true;
+            players.get(mood).start();
+            players.get(mood).volume = -7;
 
 
-        //        if (!firstTrigger) {
+            //players.get(mood).rampTo(-Infinity,10);
 
-        console.log("Moving from " + previouslyPlaying + " to " + mood)
-        var previousVolume = players.get(mood).volume.value;
-        var newTrackVolume = -7
 
-        var sampleVolume = sampleLevels[mood]
-        players.get(mood).volume.rampTo(sampleVolume, 3);
-        players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
+            //        if (!firstTrigger) {
 
-        setTimeout(function() {
-            console.log("Stopping : " + previouslyPlaying)
-            players.get(previouslyPlaying).stop()
+            console.log("Moving from " + previouslyPlaying + " to " + mood)
+            var previousVolume = players.get(mood).volume.value;
+            var newTrackVolume = -7
 
-            previouslyPlaying = mood
+            var sampleVolume = sampleLevels[mood]
+            players.get(mood).volume.rampTo(sampleVolume, 3);
+            players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
 
-        }, 7000)
-}
+            setTimeout(function() {
+                console.log("Stopping : " + previouslyPlaying)
+                players.get(previouslyPlaying).stop()
+
+                previouslyPlaying = mood
+
+            }, 7000)
+        }
 
 
 
     } else {
 
-                players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
+        players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
 
         setTimeout(function() {
             console.log("Stopping : " + previouslyPlaying)

@@ -216,6 +216,7 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
             devices = lifx.get_devices_by_group("Forest")
             active_bulbs = devices
             bulb_group = active_bulbs
+            count -= 1
 
     elif (lightTargets == "middle"):
         try:
@@ -226,6 +227,7 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
             devices = lifx.get_devices_by_group("Forest")
             active_bulbs = devices
             bulb_group = active_bulbs
+            count-=1
 
         devices_to_control = middle_group
 
@@ -287,6 +289,7 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                 devices = lifx.get_devices_by_group("Forest")
                 active_bulbs = devices
                 bulb_group = active_bulbs
+                count -= 1
 
         count+=1
         time.sleep(4)

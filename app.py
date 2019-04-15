@@ -102,8 +102,8 @@ mood_light_config = {
     },
     "rage": {
         "light_animation_type": "smooth",
-        "default_color": ORANGE,
-        "cycle_color": [65535, 65535, 65535, 2000]
+        "default_color": [65535, 65535, 65535, 2000],
+        "cycle_color": ORANGE
     },
     "angry": {
         "light_animation_type": "strobe",
@@ -132,7 +132,7 @@ mood_light_config = {
     },
     "trust": {
         "light_animation_type": "smooth",
-        "default_color": SADNESS_VIOLET,
+        "default_color": PURPLE,
         "cycle_color": WHITE
     },
     "neutral": {
@@ -162,7 +162,7 @@ mood_light_config = {
     },
     "tension": {
         "light_animation_type": "smooth",
-        "default_color": BEIGE,
+        "default_color": BLUE,
         "cycle_color": SADNESS_VIOLET
     },
     "darkneutral": {
@@ -207,7 +207,8 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
     # For now I'm using a fire multiple times that just sends the request three times to each bulb to up the probablility that it will be recieved
     devices_to_control = bulb_group
     if (lightTargets == "single" or lightTargets == "start"):
-        devices_to_control = single_group
+        # devices_to_control = single_group
+        devices_to_control = middle_group
         try:
             turn_of_all_lights()
         except Exception as e:
@@ -252,10 +253,10 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                 if light_animation_type == "smooth":
                     device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
                 elif light_animation_type == "urgency":
-                    device.set_waveform(0, cycle_color, 1500, 15, 0, 3)
+                    device.set_waveform(0, cycle_color, 2500, 10, 0, 3)
                 elif light_animation_type == "strobe":
                      device.set_color(default_color)
-                     device.set_waveform(1, [0, 0, 0, 0], 300, 40, 0, 4)
+                     device.set_waveform(1, cycle_color, 300, 40, 0, 4)
                 elif light_animation_type == "flash":
                      device.set_color(ORANGE)
                 elif light_animation_type == "stark":
@@ -263,11 +264,6 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                 elif light_animation_type == "single":
                     turn_of_all_lights()
 
-                    # random_light_index = 0
-                    # if len(bulb_group) > 1:
-                    #     random_light_index = random.randint(0, len(bulb_group)-1)
-                    # print bulb_group[random_light_index]
-                    # single_device = bulb_group[random_light_index]
                     device.set_power(65535)
                     device.set_color(default_color)
                     device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
@@ -369,8 +365,13 @@ def breathe_lights_single(light):
 # ----------------------------------------------------------------------------#
 back_group_names = ["Forest_14"]
 front_group_names = ["Forest_01", "Forest_02", "Forest_03"]
-middle_light_names = ["Forest_08",  "Forest_11","Forest_14"]
-single_group_name = "Forest_11"
+# middle_light_names = ["Forest_08",  "Forest_11","Forest_14"]
+middle_light_names = ["Forest_08",  "Forest_02","Forest_14"]
+
+
+
+
+single_group_name = "Forest_02"
 front_group = []
 middle_group = []
 single_group = []

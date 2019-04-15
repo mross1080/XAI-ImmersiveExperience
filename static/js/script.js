@@ -31,7 +31,7 @@ var lightTargets = {
     "sadness": "all",
     "trust": "all",
     "neutral": "all",
-    "darkneutral": "all",
+    "darkneutral": "middle",
     "ambiance": "all",
     "neutralcuriosity": "all",
     "tension": "all"
@@ -43,11 +43,11 @@ var extremeLevel = -4
 
 var sampleLevels = {
     "ecstasy": -3,
-    "delight": -3,
+    "delight": -5,
     "happy": -3,
     "angry": -3,
     "start": -3,
-    "rage": -4,
+    "rage": -6,
     "amazement": -3,
     "fear": -4,
     "end": -3,
@@ -203,7 +203,14 @@ function changeLights(mood) {
 
             //var osc = new Tone.LFO(0.5,-1,1).connect(panner.pan)
             //osc.start();
+            if (mood != "start") {
+
             players.get(mood).loop = true;
+            } else {
+            players.get(mood).loop = false;
+
+            }
+
             players.get(mood).start();
             players.get(mood).volume = -7;
 
@@ -228,24 +235,27 @@ function changeLights(mood) {
                 previouslyPlaying = mood
 
             }, 7000)
-        }else {
+        }
 
-        players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
 
-        setTimeout(function() {
-            console.log("Stopping : " + previouslyPlaying)
-            players.get(previouslyPlaying).stop()
+//        else {
+//
+//        players.get(previouslyPlaying).volume.rampTo(-Infinity, 8);
+//
+//        setTimeout(function() {
+//            console.log("Stopping : " + previouslyPlaying)
+//            players.get(previouslyPlaying).stop()
+//
+//            previouslyPlaying = mood
+//
+//        }, 7000)
+//    }
 
-            previouslyPlaying = mood
 
-        }, 7000)
+
     }
 
-
-
-    }
-
-    if (mood == "musicoff") {
+    if (mood == "musicoff" || mood == "starkwhite") {
 
         players.stopAll();
     }

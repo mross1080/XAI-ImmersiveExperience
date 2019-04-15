@@ -91,9 +91,9 @@ if not app.debug:
 mood_light_config = {
     "previous" : "default",
     "happy": {
-        "light_animation_type": "smooth",
+        "light_animation_type": "lean",
         "default_color": YELLOW,
-        "cycle_color": [15500, 30000, 65535, 3500]
+        "cycle_color": GREEN
     },
     "starkwhite": {
         "light_animation_type": "stark",
@@ -147,8 +147,8 @@ mood_light_config = {
     },
     "ecstasy": {
         "light_animation_type": "smooth",
-        "default_color": MUTED_YELLOW,
-        "cycle_color": SADNESS_VIOLET
+        "default_color": SADNESS_VIOLET,
+        "cycle_color": MUTED_YELLOW
     },
     "delight": {
         "light_animation_type": "smooth",
@@ -208,7 +208,10 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
     devices_to_control = bulb_group
     if (lightTargets == "single" or lightTargets == "start"):
         # devices_to_control = single_group
-        devices_to_control = middle_group
+        if (lightTargets == "start"):
+            devices_to_control = single_group
+        else:
+            devices_to_control = middle_group
         try:
             turn_of_all_lights()
         except Exception as e:
@@ -254,6 +257,8 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                     device.set_waveform(1, cycle_color, 5000, 6, 10000, 3)
                 elif light_animation_type == "urgency":
                     device.set_waveform(0, cycle_color, 2500, 10, 0, 3)
+                elif light_animation_type == "lean":
+                    device.set_waveform(1, cycle_color, 8000, 6, 25000, 3)
                 elif light_animation_type == "strobe":
                      device.set_color(default_color)
                      device.set_waveform(1, cycle_color, 300, 40, 0, 4)
@@ -262,12 +267,12 @@ def setWaveformsOnGroup(bulb_group, mood, lightTargets):
                 elif light_animation_type == "stark":
                      device.set_color(WHITE)
                 elif light_animation_type == "single":
-                    turn_of_all_lights()
+                    # turn_of_all_lights()
 
                     device.set_power(65535)
                     device.set_color(default_color)
                     device.set_waveform(1, cycle_color, 5000, 10, 10000, 3)
-                    break
+                    # break
                 elif light_animation_type == "start":
 
 
@@ -366,12 +371,12 @@ def breathe_lights_single(light):
 back_group_names = ["Forest_14"]
 front_group_names = ["Forest_01", "Forest_02", "Forest_03"]
 # middle_light_names = ["Forest_08",  "Forest_11","Forest_14"]
-middle_light_names = ["Forest_08",  "Forest_02","Forest_14"]
+middle_light_names = ["Forest_08",  "Forest_02","Forest_05"]
 
 
 
 
-single_group_name = "Forest_02"
+single_group_name = "Forest_11"
 front_group = []
 middle_group = []
 single_group = []

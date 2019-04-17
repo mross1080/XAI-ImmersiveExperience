@@ -306,10 +306,10 @@ anger_colors = [RED, ORANGE, PINK]
 # ----------------------------------------------------------------------------#
 back_group_names = ["Forest_14"]
 front_group_names = ["Forest_01", "Forest_02", "Forest_03"]
-# middle_light_names = ["Forest_08",  "Forest_11","Forest_14"]
-middle_light_names = ["Forest_08",  "Forest_02","Forest_05"]
+middle_light_names = ["Forest_08",  "Forest_11","Forest_14"]
+# middle_light_names = ["Forest_08",  "Forest_11","Forest_05"]
 
-
+# middle_light_names = ["Forest_08",  "Forest_11"]
 
 
 single_group_name = "Forest_11"

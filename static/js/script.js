@@ -23,7 +23,7 @@ var lightTargets = {
     "delight": "all",
     "happy": "all",
     "angry": "all",
-    "start": "start",
+    "start": "single",
     "rage": "all",
     "amazement": "all",
     "fear": "all",

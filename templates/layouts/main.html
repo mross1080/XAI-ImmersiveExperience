@@ -64,15 +64,11 @@
         <!-- Begin page content -->
         <main id="content" role="main" class="container">
             <div class="checkbox">
-                <label onclick="controlMic()">
-                    <input id="micControl" type="checkbox" data-toggle="toggle">
-                    Microphone State
-                </label>
                 <button type="button" onclick="changeVolume('increase')" class="btn btn-success">
-                    Increase Volume
+                    Increase Music Volume
                 </button>
                 <button type="button" onclick="changeVolume('decrease')" class="btn btn-danger">
-                    Decrease Volume
+                    Decrease Music Volume
                 </button>
             </div>
             <div id="statediv">
@@ -320,8 +316,7 @@
                                         <li onclick="targetLights('ecstasy','single')"><a href="#">Single</a></li>
                                     </ul>
                                 </div>
-                                <p>Rapidly Changing Lights with Syncced Lights, runs for 20 seconds<br>
-                                    <strong>Warning</strong> can not interrupt until sequence is over
+                                <p>Dance Party!!!!
                                 </p>
                             </td>
                             <td></td>
@@ -362,20 +357,16 @@
                                 </button>
                                 <p>Starting Sequence, flash green</p>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button type="button" onclick="changeLights('flash')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Trigger Flash
-                                </button>
-                                <p>Flash Lights for dramatic effect!</p>
-                            </td>
+
                             <td>
                                 <button type="button" onclick="changeLights('starkwhite')" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                     Stark White
                                 </button>
                                 <p> Stark White </p>
                             </td>
+                        </tr>
+                        <tr>
+
                         </tr>
                     </tbody>
                 </table>

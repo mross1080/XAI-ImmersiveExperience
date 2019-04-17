@@ -73,7 +73,7 @@ var sampleUrls = {
     "fear": remoteURL + "fear.wav",
     "sadness": remoteURL + "sad.mp3",
     "trust": remoteURL + "trust.wav",
-    "neutral": remoteURL + neutralWobble,
+    "neutral": remoteURL + "neutral1.mp3",
     "darkneutral": remoteURL + neutralWobble,
     "ambiance": remoteURL + whiteNoiseURL,
     "neutralcuriosity": remoteURL + "NeutralCuriosity.mp3",
